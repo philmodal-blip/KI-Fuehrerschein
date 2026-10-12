@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <!-- Zeichensatz: damit Umlaute (ä, ö, ü, ß) richtig angezeigt werden -->
+  <meta charset="UTF-8">
+  <!-- Wichtig fürs Handy: Seite passt sich der Bildschirmbreite an -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KI-Führerschein LBS Mitterdorf</title>
+  <!-- Das Aussehen steht in einer eigenen Datei -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ===== Kopfbereich ===== -->
+  <header class="kopf">
+    <!-- Das Schullogo. "alt" ist der Ersatztext, falls das Bild fehlt
+         (und wird von Vorleseprogrammen vorgelesen). -->
+    <img class="logo" src="logo.png" alt="Logo LBS Mitterdorf">
+    <h1>KI-Führerschein</h1>
+    <p class="untertitel">LBS Mitterdorf · Betriebslogistik</p>
+  </header>
+
+  <main class="inhalt">
+
+    <!-- ===== Begrüßung ===== -->
+    <section class="karte">
+      <h2>Willkommen!</h2>
+      <p>
+        Hier lernst du, KI-Tools sicher und klug zu nutzen.
+        Spiel die 5 Levels der Reihe nach.
+        Am Ende bekommst du deinen KI-Führerschein.
+      </p>
+    </section>
+
+    <!-- ===== Fortschritt und Punkte =====
+         Die Zahlen hier füllt app.js automatisch aus. -->
+    <section class="karte">
+      <div class="zeile">
+        <span>Dein Weg zum Führerschein</span>
+        <span id="fortschritt-text">0 von 5</span>
+      </div>
+      <div class="balken">
+        <div class="balken-fuellung" id="fortschritt-balken"></div>
+      </div>
+      <p class="punkte">⭐ <span id="punkte">0</span> Punkte</p>
+    </section>
+
+    <!-- ===== Liste der Levels =====
+         Leer, weil app.js die Level-Karten aus aufgaben.js hier einfügt. -->
+    <section>
+      <h2 class="abschnitt-titel">Deine Levels</h2>
+      <div id="level-liste"></div>
+    </section>
+
+  </main>
+
+  <!-- ===== Fußbereich ===== -->
+  <footer class="fuss">
+    🔒 Dein Fortschritt bleibt nur auf diesem Gerät gespeichert.
+    Es werden keine Daten verschickt.
+  </footer>
+
+  <!-- Reihenfolge ist wichtig: zuerst die Aufgaben, dann die Logik -->
+  <script src="aufgaben.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
