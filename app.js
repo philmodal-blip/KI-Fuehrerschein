@@ -86,8 +86,59 @@ function zeigeStartseite() {
   document.getElementById("startseite").hidden = false;
   document.getElementById("level-ansicht").hidden = true;
   kopfzeileAnzeigen(fortschritt);
+  fuehrerscheinHinweisAnzeigen(fortschritt);
+  abzeichenAnzeigen(fortschritt);
   levelListeAnzeigen(fortschritt);
   window.scrollTo(0, 0);
+}
+
+// Sind alle Levels bestanden? Dann gibt es den Führerschein.
+function alleBestanden(fortschritt) {
+  for (const level of LEVELS) {
+    if (!istBestanden(fortschritt, level.nummer)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+// Eine runde Medaille für ein Abzeichen.
+// verdient: true = Gold mit Symbol, false = grau mit Levelnummer
+// extraKlasse: z. B. "gross" für die große Medaille auf dem Ergebnis-Bildschirm
+function medailleHtml(level, verdient, extraKlasse) {
+  if (verdient) {
+    return '<div class="medaille ' + extraKlasse + '">' + level.symbol + '</div>';
+  }
+  return '<div class="medaille leer ' + extraKlasse + '">' + level.nummer + '</div>';
+}
+
+// Die 5 Abzeichen auf der Startseite
+function abzeichenAnzeigen(fortschritt) {
+  let html = "";
+  for (const level of LEVELS) {
+    const verdient = istBestanden(fortschritt, level.nummer);
+    let name = level.abzeichen;
+    if (!verdient) {
+      name = "???";
+    }
+    html = html +
+      '<div class="abzeichen">' +
+        medailleHtml(level, verdient, "") +
+        '<span class="abzeichen-name">' + name + '</span>' +
+      '</div>';
+  }
+  document.getElementById("abzeichen-liste").innerHTML = html;
+}
+
+// Großer goldener Knopf zum Führerschein, sobald alles bestanden ist
+function fuehrerscheinHinweisAnzeigen(fortschritt) {
+  const bereich = document.getElementById("fuehrerschein-hinweis");
+  bereich.innerHTML = "";
+  if (alleBestanden(fortschritt)) {
+    bereich.appendChild(neuerKnopf("🪪 Dein KI-Führerschein ist fertig! Ansehen", "knopf knopf-gold", function () {
+      fuehrerscheinZeigen(false);
+    }));
+  }
 }
 
 // Punkte und Fortschrittsbalken anzeigen
@@ -834,19 +885,183 @@ function ergebnisZeigen() {
       " % richtige Antworten. Versuch es gleich nochmal!";
   }
 
+  // Beim ersten Bestehen gibt es ein neues Abzeichen
+  let abzeichen = "";
+  if (bestanden && !warSchonBestanden) {
+    abzeichen =
+      '<div class="neues-abzeichen">' +
+        medailleHtml(level, true, "gross") +
+        '<p class="abzeichen-titel">🏅 Neues Abzeichen!</p>' +
+        '<p class="abzeichen-gross-name">' + level.abzeichen + '</p>' +
+      '</div>';
+  }
+
   const ansicht = zeigeLevelAnsicht(
     '<section class="karte ergebnis">' +
       '<h2>' + titel + '</h2>' +
       '<p class="ergebnis-zahl">' + richtige + ' von ' + anzahl + ' richtig</p>' +
       '<p>' + prozent + ' % · ⭐ ' + levelPunkte + ' Punkte</p>' +
+      abzeichen +
       '<p>' + nachricht + '</p>' +
     '</section>'
   );
+
+  // Alle Levels geschafft? Dann zuerst der Weg zum Führerschein
+  if (bestanden && alleBestanden(fortschritt)) {
+    ansicht.appendChild(neuerKnopf("🪪 Zum KI-Führerschein", "knopf knopf-gold", function () {
+      fuehrerscheinZeigen(false);
+    }));
+  }
 
   ansicht.appendChild(neuerKnopf("Zur Startseite", "knopf", zeigeStartseite));
   ansicht.appendChild(neuerKnopf("Nochmal spielen", "knopf knopf-zweit", function () {
     levelStarten(level);
   }));
+}
+
+
+/* =========================================================
+   TEIL D: Der KI-Führerschein
+   ---------------------------------------------------------
+   Nach allen 5 Levels: Vorname eingeben, dann wird der
+   Führerschein mit Vorname und Datum angezeigt.
+   Der Vorname wird nur auf diesem Gerät gespeichert.
+   ========================================================= */
+
+// Das heutige Datum als Text, z. B. "2026-10-13" (nach österreichischer Ortszeit)
+function heute() {
+  const jetzt = new Date();
+  const monat = String(jetzt.getMonth() + 1).padStart(2, "0");
+  const tag = String(jetzt.getDate()).padStart(2, "0");
+  return jetzt.getFullYear() + "-" + monat + "-" + tag;
+}
+
+// Wandelt "2026-10-13" in "13. Oktober 2026" um
+function datumSchoen(datum) {
+  const teile = datum.split("-");   // ["2026", "10", "13"]
+  const tag = new Date(Number(teile[0]), Number(teile[1]) - 1, Number(teile[2]));
+  return tag.toLocaleDateString("de-AT", {
+    day: "numeric",
+    month: "long",
+    year: "numeric"
+  });
+}
+
+// neu: true = gerade eben ausgestellt (dann gibt es Konfetti)
+function fuehrerscheinZeigen(neu) {
+  // Sicherheitshalber: ohne alle Levels kein Führerschein
+  if (!alleBestanden(fortschritt)) {
+    zeigeStartseite();
+    return;
+  }
+
+  if (!fortschritt.vorname) {
+    vornameAbfragen();
+    return;
+  }
+
+  // Die "Klassen" auf dem Führerschein = die 5 Abzeichen
+  let klassen = "";
+  for (const level of LEVELS) {
+    klassen = klassen +
+      '<div class="fs-klasse">' +
+        medailleHtml(level, true, "klein") +
+        '<span>' + level.abzeichen + '</span>' +
+      '</div>';
+  }
+
+  const ansicht = zeigeLevelAnsicht(
+    '<div class="fuehrerschein">' +
+      '<div class="fs-kopf">' +
+        '<img class="fs-logo" src="logo.png" alt="Logo LBS Mitterdorf">' +
+        '<div>' +
+          '<div class="fs-titel">KI-FÜHRERSCHEIN</div>' +
+          '<div class="fs-unter">LBS Mitterdorf · Betriebslogistik</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="fs-inhalt">' +
+        '<div class="fs-feld"><span class="fs-label">Inhaber:in</span>' +
+          '<span class="fs-wert fs-name" id="fs-name"></span></div>' +
+        '<div class="fs-feld"><span class="fs-label">Ausgestellt am</span>' +
+          '<span class="fs-wert">' + datumSchoen(fortschritt.datum) + '</span></div>' +
+        '<div class="fs-feld"><span class="fs-label">Punkte</span>' +
+          '<span class="fs-wert">⭐ ' + gesamtPunkte(fortschritt) + '</span></div>' +
+        '<div class="fs-label">Erworbene Klassen</div>' +
+        '<div class="fs-klassen">' + klassen + '</div>' +
+      '</div>' +
+      '<div class="fs-siegel">✓<br>BESTANDEN</div>' +
+    '</div>' +
+    '<p class="fs-hinweis">Zeig diesen Führerschein deiner Lehrkraft. 🎓</p>'
+  );
+
+  // Den Namen mit textContent einsetzen: So wird er immer als
+  // normaler Text angezeigt, egal welche Zeichen jemand eintippt.
+  document.getElementById("fs-name").textContent = fortschritt.vorname;
+
+  ansicht.appendChild(neuerKnopf("Zur Startseite", "knopf", zeigeStartseite));
+  ansicht.appendChild(neuerKnopf("Vorname ändern", "knopf knopf-zweit", vornameAbfragen));
+
+  if (neu) {
+    konfettiWerfen();
+  }
+}
+
+// Formular: Vorname eingeben
+function vornameAbfragen() {
+  const ansicht = zeigeLevelAnsicht(
+    '<section class="karte ergebnis">' +
+      '<div class="fs-pokal">🏆</div>' +
+      '<h2>Du hast alle 5 Levels geschafft!</h2>' +
+      '<p>Jetzt bekommst du deinen KI-Führerschein. Wie heißt du mit Vornamen?</p>' +
+      '<input id="vorname" class="eingabe vorname-feld" type="text" maxlength="30" ' +
+        'autocomplete="given-name" placeholder="Vorname">' +
+      '<p class="klein">🔒 Dein Vorname bleibt nur auf diesem Gerät gespeichert.</p>' +
+    '</section>'
+  );
+
+  const feld = document.getElementById("vorname");
+  if (fortschritt.vorname) {
+    feld.value = fortschritt.vorname;   // beim Ändern: alten Namen vorausfüllen
+  }
+
+  function ausstellen() {
+    const name = feld.value.trim();
+    if (name === "") {
+      feld.classList.add("leer");
+      feld.focus();
+      return;
+    }
+    fortschritt.vorname = name;
+    // Das Datum wird nur beim ersten Ausstellen gesetzt und bleibt dann gleich
+    if (!fortschritt.datum) {
+      fortschritt.datum = heute();
+    }
+    fortschrittSpeichern(fortschritt);
+    fuehrerscheinZeigen(true);
+  }
+
+  ansicht.appendChild(neuerKnopf("🪪 Führerschein ausstellen", "knopf knopf-gold", ausstellen));
+  feld.addEventListener("keydown", function (ereignis) {
+    if (ereignis.key === "Enter") {
+      ausstellen();
+    }
+  });
+}
+
+// Ein bisschen Konfetti zum Feiern (verschwindet nach 4 Sekunden von selbst)
+function konfettiWerfen() {
+  const zeichen = ["🎉", "⭐", "🎊", "✨", "🏅"];
+  for (let i = 0; i < 24; i++) {
+    const stueck = document.createElement("span");
+    stueck.className = "konfetti";
+    stueck.textContent = zeichen[i % zeichen.length];
+    stueck.style.left = Math.random() * 100 + "vw";
+    stueck.style.animationDelay = Math.random() * 1.2 + "s";
+    document.body.appendChild(stueck);
+    setTimeout(function () {
+      stueck.remove();
+    }, 4000);
+  }
 }
 
 
