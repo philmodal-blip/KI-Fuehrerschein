@@ -531,6 +531,194 @@ h1, h2 {
   color: #ff8a80;
 }
 
+/* ----- Level 5: gemeinsame Bausteine ----- */
+
+/* Zeilenumbrüche (\n) in der KI-Antwort anzeigen */
+.ki-text {
+  white-space: pre-line;
+}
+
+/* Tabelle: am Handy seitlich wischbar, falls sie zu breit ist */
+.tabelle-rahmen {
+  overflow-x: auto;
+  margin-bottom: 1rem;
+}
+
+.tabelle {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--karte);
+  font-size: 0.95rem;
+}
+
+.tabelle th,
+.tabelle td {
+  padding: 0.5rem;
+  border: 1px solid #d5dbd5;
+  text-align: left;
+}
+
+.tabelle th {
+  background: var(--hauptfarbe-hell);
+}
+
+/* ----- Rechen-Aufgabe: Zahlenfeld ----- */
+.eingabe-zeile {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.eingabe {
+  width: 8em;
+  padding: 0.6rem 0.8rem;
+  border: 3px solid var(--hauptfarbe);
+  border-radius: 12px;
+  font: inherit;
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.eingabe.leer {
+  border-color: var(--fehler);
+}
+
+.eingabe-richtig {
+  border-color: var(--hauptfarbe-dunkel);
+  background: var(--richtig-hell);
+}
+
+.eingabe-falsch {
+  border-color: var(--fehler);
+  background: var(--fehler-hell);
+}
+
+.einheit {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+/* ----- Mehrfach-Auswahl: Kästchen zum Abhaken ----- */
+.option::before {
+  content: "☐ ";
+}
+
+.option.gewaehlt {
+  border-color: var(--hauptfarbe-dunkel);
+  background: var(--hauptfarbe-hell);
+  font-weight: bold;
+}
+
+.option.gewaehlt::before {
+  content: "☑ ";
+}
+
+/* Nach dem Prüfen (diese Regeln stehen absichtlich danach) */
+.option.richtig::before {
+  content: "✓ ";
+}
+
+.option.falsch::before {
+  content: "✗ ";
+}
+
+/* Falsch angetippt: rot, auch wenn sie vorher als "gewählt" grün war */
+.option.falsch {
+  border-color: var(--fehler);
+  background: var(--fehler-hell);
+}
+
+/* Richtige Option, die vergessen wurde */
+.option.fehlt {
+  opacity: 1;
+  border-style: dashed;
+  border-color: var(--hauptfarbe-dunkel);
+}
+
+.option.fehlt::before {
+  content: "⚠️ Vergessen: ";
+  font-weight: bold;
+}
+
+/* Baukasten: die entstehende Anfrage */
+.vorschau {
+  background: #fffbe6;
+  border: 2px dashed var(--erfolg);
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.vorschau p:last-child {
+  margin-bottom: 0;
+}
+
+/* ----- Dokument-Aufgabe: Rechnung wie auf Papier ----- */
+.dokument {
+  background: white;
+  border: 1px solid #d5dbd5;
+  border-radius: 4px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+}
+
+.dokument-titel {
+  font-weight: bold;
+  font-size: 1.1rem;
+  letter-spacing: 0.05em;
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.5rem;
+  border-bottom: 2px solid var(--text);
+}
+
+/* Jede Zeile: Bezeichnung links, Wert rechts */
+.dokument-zeile {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  min-height: 48px;
+  margin-bottom: 0.35rem;
+  padding: 0.4rem 0.6rem;
+  border: 2px dashed transparent;
+  border-radius: 8px;
+}
+
+.dokument-zeile:hover:enabled {
+  border-color: #c5cbc5;
+}
+
+.dokument-label {
+  color: #5a645a;
+}
+
+.dokument-wert {
+  font-weight: bold;
+  text-align: right;
+}
+
+.dokument-zeile.richtig,
+.dokument-zeile.falsch {
+  border-style: solid;
+}
+
+/* Kein ✓/✗ vorne, sondern eine Fahne beim Label */
+.dokument-zeile::before,
+.dokument-zeile.richtig::before,
+.dokument-zeile.falsch::before {
+  content: none;
+}
+
+.dokument-zeile.richtig .dokument-label::before {
+  content: "🚩 ";
+}
+
+.dokument-zeile.falsch .dokument-label::before {
+  content: "✗ ";
+}
+
 /* Wer Animationen im System abgeschaltet hat, bekommt keine */
 @media (prefers-reduced-motion: reduce) {
   .datenkarte,

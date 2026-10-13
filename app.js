@@ -255,9 +255,61 @@ function aufgabeZeigen(nummer) {
     fehlerZeigen(aufgabe, kopf);
   } else if (aufgabe.typ === "ampel") {
     ampelZeigen(aufgabe, kopf);
+  } else if (aufgabe.typ === "rechnen") {
+    rechnenZeigen(aufgabe, kopf);
+  } else if (aufgabe.typ === "auswahl") {
+    auswahlZeigen(aufgabe, kopf);
+  } else if (aufgabe.typ === "dokument") {
+    dokumentZeigen(aufgabe, kopf);
   } else {
     quizZeigen(aufgabe, kopf);
   }
+}
+
+
+// ----- Bausteine, die mehrere Aufgabentypen verwenden -----
+// Jede Funktion liefert "" zurück, wenn es das Feld in der Aufgabe nicht gibt.
+
+// Kasten "📌 Die Situation"
+function situationHtml(aufgabe) {
+  if (!aufgabe.situation) {
+    return "";
+  }
+  return '<section class="karte">' +
+      '<p class="situation-titel">📌 Die Situation</p>' +
+      '<p>' + aufgabe.situation + '</p>' +
+    '</section>';
+}
+
+// Graue Sprechblase mit der Antwort der KI
+function kiAntwortHtml(aufgabe, titel) {
+  if (!aufgabe.kiAntwort) {
+    return "";
+  }
+  return '<div class="ki-sprechblase">' +
+      '<p class="situation-titel">🤖 ' + titel + '</p>' +
+      '<div class="ki-text">' + aufgabe.kiAntwort + '</div>' +
+    '</div>';
+}
+
+// Tabelle, z. B. für einen Angebotsvergleich
+function tabelleHtml(aufgabe) {
+  if (!aufgabe.tabelle) {
+    return "";
+  }
+  let html = '<div class="tabelle-rahmen"><table class="tabelle"><tr>';
+  for (const spalte of aufgabe.tabelle.spalten) {
+    html = html + '<th>' + spalte + '</th>';
+  }
+  html = html + '</tr>';
+  for (const zeile of aufgabe.tabelle.zeilen) {
+    html = html + '<tr>';
+    for (const zelle of zeile) {
+      html = html + '<td>' + zelle + '</td>';
+    }
+    html = html + '</tr>';
+  }
+  return html + '</table></div>';
 }
 
 
@@ -265,6 +317,9 @@ function aufgabeZeigen(nummer) {
 function quizZeigen(aufgabe, kopf) {
   zeigeLevelAnsicht(
     kopf +
+    situationHtml(aufgabe) +
+    tabelleHtml(aufgabe) +
+    kiAntwortHtml(aufgabe, "Die KI sagt:") +
     '<section class="karte"><h2>' + aufgabe.frage + '</h2></section>' +
     '<div id="antworten"></div>' +
     '<div id="rueckmeldung"></div>'
@@ -477,6 +532,222 @@ function ampelPruefen(aufgabe, gewaehlt) {
   }
 
   rueckmeldungZeigen(istRichtig, erklaerung, "");
+}
+
+
+// ----- Aufgabentyp "rechnen": selbst nachrechnen und Zahl eintippen -----
+function rechnenZeigen(aufgabe, kopf) {
+  const ansicht = zeigeLevelAnsicht(
+    kopf +
+    situationHtml(aufgabe) +
+    kiAntwortHtml(aufgabe, "Die KI rechnet:") +
+    '<h2 class="frage-klein">🧮 ' + aufgabe.frage + '</h2>' +
+    '<div class="eingabe-zeile">' +
+      // inputmode="decimal" öffnet am Handy die Zahlen-Tastatur
+      '<input id="eingabe" class="eingabe" type="text" inputmode="decimal" autocomplete="off" placeholder="?">' +
+      '<span class="einheit">' + (aufgabe.einheit || "") + '</span>' +
+    '</div>' +
+    '<div id="pruef-bereich"></div>' +
+    '<div id="rueckmeldung"></div>'
+  );
+
+  const pruefKnopf = neuerKnopf("Prüfen", "knopf", function () {
+    rechnenPruefen(aufgabe);
+  });
+  pruefKnopf.id = "pruefen";
+  document.getElementById("pruef-bereich").appendChild(pruefKnopf);
+
+  // Auch die Enter-Taste prüft
+  document.getElementById("eingabe").addEventListener("keydown", function (ereignis) {
+    if (ereignis.key === "Enter") {
+      rechnenPruefen(aufgabe);
+    }
+  });
+}
+
+function rechnenPruefen(aufgabe) {
+  const feld = document.getElementById("eingabe");
+  if (feld.disabled) {
+    return;   // schon geprüft
+  }
+
+  // Komma erlauben: "12,5" wird zu "12.5"
+  const text = feld.value.trim().replace(",", ".");
+  if (text === "" || isNaN(Number(text))) {
+    feld.classList.add("leer");
+    feld.placeholder = "Zahl?";
+    feld.focus();
+    return;
+  }
+
+  const istRichtig = Math.abs(Number(text) - aufgabe.loesung) < 0.01;
+
+  feld.disabled = true;
+  feld.classList.remove("leer");
+  feld.classList.add(istRichtig ? "eingabe-richtig" : "eingabe-falsch");
+  document.getElementById("pruef-bereich").innerHTML = "";
+
+  let erklaerung = aufgabe.erklaerung;
+  if (!istRichtig) {
+    erklaerung = '<b>Richtig wäre: ' + String(aufgabe.loesung).replace(".", ",") + ' ' +
+      (aufgabe.einheit || "") + '.</b><br>' + erklaerung;
+  }
+  rueckmeldungZeigen(istRichtig, erklaerung, "");
+}
+
+
+// ----- Aufgabentyp "auswahl": mehrere richtige Antworten antippen -----
+function auswahlZeigen(aufgabe, kopf) {
+  let vorschau = "";
+  if (aufgabe.baukasten) {
+    vorschau = '<div class="vorschau" id="vorschau"></div>';
+  }
+
+  zeigeLevelAnsicht(
+    kopf +
+    situationHtml(aufgabe) +
+    kiAntwortHtml(aufgabe, "Die KI hat geschrieben:") +
+    '<h2 class="frage-klein">' + aufgabe.frage + '</h2>' +
+    '<div id="antworten"></div>' +
+    vorschau +
+    '<div id="pruef-bereich"></div>' +
+    '<div id="rueckmeldung"></div>'
+  );
+
+  const pruefKnopf = neuerKnopf("Prüfen", "knopf", function () {
+    auswahlPruefen(aufgabe);
+  });
+  document.getElementById("pruef-bereich").appendChild(pruefKnopf);
+
+  // Jede Option kann an- und wieder abgewählt werden
+  const bereich = document.getElementById("antworten");
+  for (const text of aufgabe.optionen) {
+    const knopf = document.createElement("button");
+    knopf.className = "antwort option";
+    knopf.textContent = text;
+    knopf.addEventListener("click", function () {
+      knopf.classList.toggle("gewaehlt");
+      pruefKnopf.textContent = "Prüfen";   // falls vorher ein Hinweis dort stand
+      vorschauAktualisieren(aufgabe);
+    });
+    bereich.appendChild(knopf);
+  }
+
+  vorschauAktualisieren(aufgabe);
+}
+
+// Beim Baukasten: die gewählten Bausteine als fertige Anfrage anzeigen
+function vorschauAktualisieren(aufgabe) {
+  if (!aufgabe.baukasten) {
+    return;
+  }
+  let text = "";
+  for (const knopf of document.querySelectorAll(".option.gewaehlt")) {
+    text = text + knopf.textContent + " ";
+  }
+  if (text === "") {
+    text = "<i>Noch leer – tippe oben Bausteine an.</i>";
+  }
+  document.getElementById("vorschau").innerHTML =
+    '<p class="situation-titel">📝 Deine Anfrage an die KI:</p><p>' + text + '</p>';
+}
+
+function auswahlPruefen(aufgabe) {
+  const knoepfe = document.querySelectorAll(".option");
+
+  // Ohne Auswahl wird noch nicht geprüft
+  if (document.querySelectorAll(".option.gewaehlt").length === 0) {
+    document.getElementById("pruef-bereich").querySelector(".knopf").textContent =
+      "Tippe zuerst mindestens eine Antwort an";
+    return;
+  }
+
+  let gefunden = 0;      // richtige, die angetippt wurden
+  let falschGetippt = 0; // falsche, die angetippt wurden
+  let alleRichtig = true;
+
+  for (let i = 0; i < knoepfe.length; i++) {
+    const sollGewaehltSein = aufgabe.richtig.includes(i + 1);
+    const istGewaehlt = knoepfe[i].classList.contains("gewaehlt");
+    knoepfe[i].disabled = true;
+
+    if (sollGewaehltSein && istGewaehlt) {
+      knoepfe[i].classList.add("richtig");
+      gefunden = gefunden + 1;
+    } else if (sollGewaehltSein && !istGewaehlt) {
+      knoepfe[i].classList.add("fehlt");
+      alleRichtig = false;
+    } else if (!sollGewaehltSein && istGewaehlt) {
+      knoepfe[i].classList.add("falsch");
+      falschGetippt = falschGetippt + 1;
+      alleRichtig = false;
+    }
+  }
+
+  document.getElementById("pruef-bereich").innerHTML = "";
+
+  let erklaerung = aufgabe.erklaerung;
+  if (!alleRichtig) {
+    let bilanz = 'Du hast ' + gefunden + ' von ' + aufgabe.richtig.length + ' richtigen gefunden';
+    if (falschGetippt > 0) {
+      bilanz = bilanz + ' und ' + falschGetippt + ' falsche angetippt';
+    }
+    erklaerung = '<b>' + bilanz + '.</b><br>' + erklaerung;
+  }
+  rueckmeldungZeigen(alleRichtig, erklaerung, "");
+}
+
+
+// ----- Aufgabentyp "dokument": verdächtige Stelle in einem Dokument finden -----
+function dokumentZeigen(aufgabe, kopf) {
+  let hinweis = "";
+  if (aufgabe.hinweis) {
+    hinweis = '<section class="karte">' +
+        '<p class="situation-titel">📇 Gut zu wissen</p>' +
+        '<p>' + aufgabe.hinweis + '</p>' +
+      '</section>';
+  }
+
+  zeigeLevelAnsicht(
+    kopf +
+    hinweis +
+    kiAntwortHtml(aufgabe, "Die KI sagt:") +
+    '<h2 class="frage-klein">' + aufgabe.frage + '</h2>' +
+    '<div class="dokument">' +
+      '<div class="dokument-titel">' + aufgabe.dokumentTitel + '</div>' +
+      '<div id="antworten"></div>' +
+    '</div>' +
+    '<div id="rueckmeldung"></div>'
+  );
+
+  // Jede Zeile des Dokuments ist antippbar
+  const bereich = document.getElementById("antworten");
+  for (let i = 0; i < aufgabe.zeilen.length; i++) {
+    const zeilenNummer = i + 1;
+    const knopf = document.createElement("button");
+    knopf.className = "antwort dokument-zeile";
+    knopf.innerHTML =
+      '<span class="dokument-label">' + aufgabe.zeilen[i][0] + '</span>' +
+      '<span class="dokument-wert">' + aufgabe.zeilen[i][1] + '</span>';
+    knopf.addEventListener("click", function () {
+      dokumentPruefen(aufgabe, zeilenNummer);
+    });
+    bereich.appendChild(knopf);
+  }
+}
+
+function dokumentPruefen(aufgabe, gewaehlt) {
+  const knoepfe = document.querySelectorAll(".dokument-zeile");
+  for (let i = 0; i < knoepfe.length; i++) {
+    knoepfe[i].disabled = true;
+    if (i + 1 === aufgabe.verdaechtig) {
+      knoepfe[i].classList.add("richtig");
+    } else if (i + 1 === gewaehlt) {
+      knoepfe[i].classList.add("falsch");
+    }
+  }
+
+  rueckmeldungZeigen(gewaehlt === aufgabe.verdaechtig, aufgabe.erklaerung, "");
 }
 
 

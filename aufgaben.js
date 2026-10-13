@@ -72,6 +72,57 @@
      erklaerung: "Warum diese Farbe."
    },
 
+   So ist eine Rechen-Aufgabe aufgebaut (man tippt eine Zahl ein):
+   {
+     typ: "rechnen",
+     situation: "Die Angaben zur Aufgabe",
+     kiAntwort: "Was die KI ausgerechnet hat",   ← darf fehlen
+     frage: "Was soll man ausrechnen?",
+     loesung: 340,                    ← die richtige Zahl (Kommazahlen mit Punkt: 12.5)
+     einheit: "Stück",                ← darf fehlen
+     erklaerung: "Der richtige Rechenweg."
+   },
+
+   So ist eine Mehrfach-Auswahl aufgebaut (mehrere Antworten sind richtig):
+   {
+     typ: "auswahl",
+     situation: "…",                  ← darf fehlen
+     kiAntwort: "…",                  ← darf fehlen
+     frage: "Tippe alle … an.",
+     optionen: [ "…", "…", "…", "…" ],
+     richtig: [1, 3, 4],              ← die NUMMERN aller richtigen Optionen
+     baukasten: true,                 ← darf fehlen: zeigt die gewählten Optionen als Anfrage an
+     erklaerung: "…"
+   },
+
+   So ist eine Dokument-Aufgabe aufgebaut (verdächtige Stelle finden):
+   {
+     typ: "dokument",
+     hinweis: "Wichtige Infos vorab", ← darf fehlen
+     kiAntwort: "…",                  ← darf fehlen
+     frage: "Tippe auf die verdächtige Stelle.",
+     dokumentTitel: "RECHNUNG Nr. 123",
+     zeilen: [
+       ["Bezeichnung", "Wert"],       ← jede Zeile: links die Bezeichnung, rechts der Wert
+       ["Betrag", "100,00 €"]
+     ],
+     verdaechtig: 2,                  ← die NUMMER der verdächtigen Zeile
+     erklaerung: "…"
+   },
+
+   Zusatz für Quiz-Aufgaben (alles darf fehlen):
+     situation: "…",                  ← Kasten "Die Situation" über der Frage
+     kiAntwort: "…",                  ← Kasten "Die KI sagt" über der Frage
+     tabelle: {                       ← eine Tabelle über der Frage
+       spalten: ["", "Spalte 1", "Spalte 2"],
+       zeilen: [
+         ["Zeile 1", "…", "…"],
+         ["Zeile 2", "…", "…"]
+       ]
+     },
+
+   Tipp: In kiAntwort beginnt mit \n eine neue Zeile.
+
    WICHTIG beim Bearbeiten:
    • Texte stehen immer zwischen "Anführungszeichen".
    • Nach jedem Eintrag steht ein Komma.
@@ -544,6 +595,109 @@ const LEVELS = [
     beschreibung: "KI-Ergebnisse aus Lager und Einkauf prüfen.",
     symbol: "📦",
     abzeichen: "Logistik-Profi",
-    aufgaben: []
+
+    infos: [
+      {
+        titel: "Willkommen im Lager!",
+        text: "Jetzt wird es praktisch. In diesem Level begegnet dir KI wie im echten Betrieb: beim Rechnen, Schreiben, Vergleichen und Bezahlen. Du brauchst alles, was du bisher gelernt hast:",
+        liste: [
+          "🤔 Nicht blind übernehmen (Level 1)",
+          "💬 Gut fragen (Level 2)",
+          "🧮 Nachrechnen und Fehler finden (Level 3)",
+          "🚦 Datenschutz beachten (Level 4)"
+        ]
+      },
+      {
+        titel: "Vorsicht, Betrug!",
+        text: "Betrüger fälschen Rechnungen und Mails – oft mit Hilfe von KI. Sie sehen täuschend echt aus. Das häufigste Warnsignal ist eine neue oder geänderte Bankverbindung. Dann gilt: nicht zahlen! Ruf beim Lieferanten an, und zwar unter der Nummer, die ihr schon kennt – nicht unter der aus der Mail."
+      }
+    ],
+
+    aufgaben: [
+      {
+        typ: "rechnen",
+        situation: "Für Klebeband-Rollen gilt: Tagesverbrauch 40 Stück, Lieferzeit 6 Tage, Mindestbestand 100 Stück. Du lässt die KI den Meldebestand berechnen.",
+        kiAntwort: "Der Meldebestand ist Tagesverbrauch mal Lieferzeit.\n40 Stück × 6 Tage = 240 Stück.\nBestelle also nach, wenn der Bestand auf 240 Stück sinkt.",
+        frage: "Rechne selbst nach: Wie hoch ist der Meldebestand wirklich?",
+        loesung: 340,
+        einheit: "Stück",
+        erklaerung: "Meldebestand = Tagesverbrauch × Lieferzeit + Mindestbestand = 40 × 6 + 100 = 340 Stück. Die KI hat den Mindestbestand vergessen. Bei 240 Stück zu bestellen hieße: Wenn die Lieferung kommt, ist das Lager genau leer – ohne jede Reserve."
+      },
+      {
+        typ: "auswahl",
+        situation: "Bei einer Lieferung waren 5 von 40 Kartons beschädigt. Du hast die KI gebeten, eine Reklamation an den Lieferanten zu schreiben.",
+        kiAntwort: "Betreff: Reklamation\n\nHallo,\n\ndie Lieferung von gestern ist eine absolute Frechheit! 5 Kartons waren kaputt. Das passiert bei Ihnen ja ständig. So kann man wirklich nicht arbeiten.\n\nGrüße\nLager",
+        frage: "Was stimmt an dieser Mail nicht? Tippe alle Probleme an.",
+        optionen: [
+          "Der Ton ist zu unfreundlich für eine Geschäftsmail.",
+          "Die Bestell- oder Lieferscheinnummer fehlt.",
+          "Die Anzahl der beschädigten Kartons fehlt.",
+          "Es steht nicht drin, was der Lieferant jetzt tun soll.",
+          "„Das passiert ständig“ – das hat die KI einfach behauptet.",
+          "Der Betreff fehlt."
+        ],
+        richtig: [1, 2, 4, 5],
+        erklaerung: "Eine gute Reklamation ist sachlich, nennt Bestell- oder Lieferscheinnummer, beschreibt den Schaden und sagt, was du willst – z. B. Ersatz oder eine Gutschrift. „Das passiert ständig“ hat die KI erfunden. So etwas darf nie ungeprüft verschickt werden. Anzahl und Betreff waren übrigens vorhanden."
+      },
+      {
+        typ: "quiz",
+        situation: "Du brauchst 500 Versandkartons. Drei Lieferanten haben Angebote geschickt. Die KI soll sie vergleichen.",
+        tabelle: {
+          spalten: ["", "Preis pro Stück", "Versandkosten", "Lieferzeit"],
+          zeilen: [
+            ["Lieferant A", "0,80 €", "150 €", "10 Tage"],
+            ["Lieferant B", "0,85 €", "frei", "5 Tage"],
+            ["Lieferant C", "0,82 €", "40 €", "7 Tage"]
+          ]
+        },
+        kiAntwort: "Lieferant A hat mit 0,80 € den niedrigsten Stückpreis. Ich empfehle daher Lieferant A.",
+        frage: "Stimmt die Empfehlung? Welcher Lieferant ist für 500 Stück insgesamt am günstigsten?",
+        antworten: [
+          "Die KI hat recht: Lieferant A ist am günstigsten.",
+          "Lieferant C, weil sein Preis in der Mitte liegt.",
+          "Lieferant B ist insgesamt am günstigsten.",
+          "Alle drei kosten insgesamt ungefähr gleich viel.",
+          "Das kann man mit diesen Angaben nicht berechnen."
+        ],
+        richtig: 3,
+        erklaerung: "Rechne die Gesamtkosten: A: 500 × 0,80 € + 150 € = 550 €. B: 500 × 0,85 € = 425 €. C: 500 × 0,82 € + 40 € = 450 €. B ist am günstigsten und liefert am schnellsten. Die KI hat nur den Stückpreis angeschaut und die Versandkosten übersehen."
+      },
+      {
+        typ: "dokument",
+        hinweis: "Holzbau Steiner GmbH ist euer Stammlieferant für Paletten. In euren Stammdaten steht seine Bankverbindung: IBAN AT48 3800 0000 0012 3456.",
+        kiAntwort: "Ich habe die Rechnung geprüft: Lieferant, Menge und Beträge sind korrekt, die Umsatzsteuer ist richtig berechnet. Die Rechnung kann bezahlt werden.",
+        frage: "🕵️ Detektiv-Auftrag: Tippe auf die verdächtige Stelle der Rechnung.",
+        dokumentTitel: "RECHNUNG Nr. 2026-0815",
+        zeilen: [
+          ["Von", "Holzbau Steiner GmbH, Mitterdorf"],
+          ["Datum", "8. Oktober 2026"],
+          ["Leistung", "200 Europaletten à 12,00 €"],
+          ["Netto", "2.400,00 €"],
+          ["USt 20 %", "480,00 €"],
+          ["Gesamt", "2.880,00 €"],
+          ["IBAN", "LT12 3250 0123 4567 8901"],
+          ["Zahlbar", "innerhalb von 14 Tagen"]
+        ],
+        verdaechtig: 7,
+        erklaerung: "Die IBAN passt nicht zu euren Stammdaten – und LT ist ein Konto in Litauen statt AT für Österreich. Ein typisches Zeichen für Rechnungsbetrug! Die KI hat nur die Rechnung selbst geprüft, nicht eure Stammdaten. Richtig ist: nicht zahlen, beim Lieferanten unter der bekannten Nummer anrufen und die Buchhaltung informieren."
+      },
+      {
+        typ: "auswahl",
+        situation: "Für die Inventur am Jahresende brauchst du eine Zählliste. Du baust dir die Anfrage an die KI aus Bausteinen zusammen.",
+        frage: "🧱 Prompt-Baukasten: Tippe die Bausteine an, die in eine gute Anfrage gehören.",
+        baukasten: true,
+        optionen: [
+          "Erstelle eine Vorlage für eine Inventur-Zählliste für unser Lager.",
+          "Mach es irgendwie schön und professionell.",
+          "Spalten: Artikelnummer, Bezeichnung, Lagerplatz, Soll-Menge, Ist-Menge, Differenz.",
+          "Hier ist unser Zugang zum Warenwirtschaftssystem: Benutzer lager1, Passwort Sommer2026.",
+          "Als Tabelle, die ich in Excel einfügen kann, mit 20 leeren Zeilen.",
+          "Füge auch die Namen und Adressen unserer zehn wichtigsten Kunden ein.",
+          "Unten eine Zeile für Datum und Unterschrift der Person, die zählt."
+        ],
+        richtig: [1, 3, 5, 7],
+        erklaerung: "Eine gute Anfrage sagt, was du brauchst (Zählliste), welche Spalten, welche Form und was noch dazugehört. „Irgendwie schön“ hilft der KI nicht weiter. Passwörter und Kundendaten gehören nie in eine KI – und für eine Zählliste braucht man sie auch gar nicht."
+      }
+    ]
   }
 ];
