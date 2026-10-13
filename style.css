@@ -336,6 +336,37 @@ h1, h2 {
   font-size: inherit;
 }
 
+/* ----- Fehler-Such-Aufgabe (Level 3) ----- */
+
+/* Die KI-Antwort als graue Sprechblase */
+.ki-sprechblase {
+  background: #f0f2f0;
+  border-radius: 12px;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+/* Jeder Satz ist antippbar, wirkt aber wie normaler Text */
+.satz {
+  min-height: 48px;
+  margin-bottom: 0.5rem;
+  border: 2px dashed #c5cbc5;
+}
+
+.satz.richtig,
+.satz.falsch {
+  border-style: solid;
+}
+
+.satz:last-child {
+  margin-bottom: 0;
+}
+
+/* Der Satz mit dem Fehler: Lupe statt Häkchen */
+.satz.richtig::before {
+  content: "🔍 Hier ist der Fehler: ";
+}
+
 /* Erklärung nach dem Antworten */
 .feedback {
   border-left: 6px solid var(--hauptfarbe-dunkel);

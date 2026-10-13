@@ -50,6 +50,19 @@
      erklaerung: "Warum B besser ist."
    },
 
+   So ist eine Fehler-Such-Aufgabe aufgebaut (KI-Antwort mit einem Fehler):
+   {
+     typ: "fehler",
+     frage: "Was man die KI gefragt hat",
+     saetze: [                        ← die KI-Antwort, Satz für Satz
+       "Erster Satz.",
+       "Zweiter Satz.",
+       "Dritter Satz."
+     ],
+     fehler: 2,                       ← die NUMMER des falschen Satzes (hier: Satz 2)
+     erklaerung: "Was falsch ist und was richtig wäre."
+   },
+
    WICHTIG beim Bearbeiten:
    • Texte stehen immer zwischen "Anführungszeichen".
    • Nach jedem Eintrag steht ein Komma.
@@ -306,7 +319,111 @@ const LEVELS = [
     beschreibung: "In der KI-Antwort steckt ein Fehler. Finde ihn!",
     symbol: "🔍",
     abzeichen: "Fehlerjäger:in",
-    aufgaben: []
+
+    infos: [
+      {
+        titel: "Fehler haben viele Gesichter",
+        text: "KI-Fehler sind selten offensichtlich. Sie verstecken sich mitten in einer guten Antwort. Typische Fehler sind:",
+        liste: [
+          "🧮 Rechenfehler: Die Formel stimmt, das Ergebnis nicht.",
+          "🇩🇪 Falsches Land: Regeln aus Deutschland statt aus Österreich.",
+          "📅 Veraltetes Wissen: Eine Regel hat sich inzwischen geändert.",
+          "🔄 Vertauscht: Wer was macht oder zahlt, ist verdreht.",
+          "↔️ Widerspruch: Zwei Sätze passen nicht zusammen."
+        ]
+      },
+      {
+        titel: "So jagst du Fehler",
+        text: "Lies die Antwort Satz für Satz. Stell dir bei jedem Satz eine Frage:",
+        liste: [
+          "Stimmt diese Zahl? Rechne selbst nach.",
+          "Gilt das wirklich in Österreich?",
+          "Passt dieser Satz zu den anderen Sätzen?",
+          "Würde das im Betrieb wirklich so gemacht werden?"
+        ]
+      }
+    ],
+
+    aufgaben: [
+      {
+        typ: "fehler",
+        frage: "Wie berechne ich die Umsatzsteuer auf einer Rechnung für Büromaterial?",
+        saetze: [
+          "Büromaterial unterliegt in Österreich dem Normalsteuersatz.",
+          "Der Normalsteuersatz beträgt 19 %.",
+          "Du berechnest die Steuer vom Nettobetrag.",
+          "Beispiel: Bei 200 € netto kommen 40 € Umsatzsteuer dazu.",
+          "Der Bruttobetrag ist dann 240 €."
+        ],
+        fehler: 2,
+        erklaerung: "In Österreich beträgt der Normalsteuersatz 20 %. 19 % gilt in Deutschland. Hast du es bemerkt? Das Beispiel rechnet sogar richtig mit 20 % – die Antwort widerspricht sich selbst."
+      },
+      {
+        typ: "fehler",
+        frage: "Eine Rechnung über 1.500 € hat 2 % Skonto bei Zahlung innerhalb von 10 Tagen. Wie viel muss ich zahlen?",
+        saetze: [
+          "Skonto ist ein Preisnachlass für schnelles Bezahlen.",
+          "Der Prozentsatz wird vom Rechnungsbetrag berechnet.",
+          "Die Frist steht auf der Rechnung, hier sind es 10 Tage.",
+          "2 % von 1.500 € sind 3 €. Du zahlst also 1.497 €.",
+          "Nach Ablauf der Frist zahlst du den vollen Betrag."
+        ],
+        fehler: 4,
+        erklaerung: "2 % von 1.500 € sind 30 €, nicht 3 €. Du zahlst also 1.470 €. Ein kleiner Kommafehler – aber er kostet viel Geld. Rechne Prozente immer selbst nach!"
+      },
+      {
+        typ: "fehler",
+        frage: "Was bedeutet die Lieferbedingung EXW?",
+        saetze: [
+          "EXW steht für „Ex Works“, auf Deutsch „ab Werk“.",
+          "Der Verkäufer stellt die Ware auf seinem eigenen Gelände bereit.",
+          "Der Verkäufer organisiert den Transport bis zum Lager des Käufers und trägt bis dahin das Risiko.",
+          "Der Käufer trägt also fast alle Kosten und Risiken.",
+          "EXW ist eine der Incoterms-Klauseln."
+        ],
+        fehler: 3,
+        erklaerung: "Bei EXW holt der Käufer die Ware ab. Er organisiert und bezahlt den Transport und trägt ab der Bereitstellung das Risiko. Satz 3 beschreibt eher eine Klausel wie DAP. Und er widerspricht Satz 4."
+      },
+      {
+        typ: "fehler",
+        frage: "Ein Lehrling fragt: Wie viel Urlaub habe ich in Österreich?",
+        saetze: [
+          "Lehrlinge haben in Österreich denselben Urlaubsanspruch wie andere Arbeitnehmer:innen.",
+          "Der Anspruch beträgt 5 Wochen pro Arbeitsjahr.",
+          "Bei einer 5-Tage-Woche sind das 25 Arbeitstage.",
+          "Nach 25 Dienstjahren steigt der Anspruch auf 6 Wochen.",
+          "Urlaub, den du nicht verbrauchst, verfällt immer am 31. Dezember."
+        ],
+        fehler: 5,
+        erklaerung: "In Österreich verfällt Urlaub nicht einfach am Jahresende. Er verjährt erst 2 Jahre nach dem Ende des Urlaubsjahres, in dem er entstanden ist. Die KI hat hier eine Regel erfunden, die gut klingt."
+      },
+      {
+        typ: "fehler",
+        frage: "Worauf muss ich bei der Annahme einer Lieferung achten?",
+        saetze: [
+          "Der Lieferschein begleitet die Ware und zeigt, was geliefert wurde.",
+          "Du vergleichst den Lieferschein mit der Bestellung und mit der tatsächlichen Ware.",
+          "Du zählst die Packstücke und prüfst die Verpackung auf Schäden.",
+          "Schäden notierst du am besten ein paar Tage später, wenn du in Ruhe Zeit hast.",
+          "Die Rechnung kommt oft getrennt und wird später mit Lieferschein und Bestellung abgeglichen."
+        ],
+        fehler: 4,
+        erklaerung: "Schäden müssen sofort bei der Annahme vermerkt werden, am besten auf dem Lieferschein, und der Fahrer bestätigt sie mit Unterschrift. Später ist schwer zu beweisen, wann der Schaden entstanden ist."
+      },
+      {
+        typ: "fehler",
+        frage: "Am Jahresanfang hatten wir 400 Stück auf Lager, am Jahresende 200 Stück. Wie hoch ist der durchschnittliche Lagerbestand?",
+        saetze: [
+          "Der durchschnittliche Lagerbestand zeigt, wie viel im Schnitt auf Lager liegt.",
+          "Eine einfache Formel ist: (Anfangsbestand + Endbestand) : 2.",
+          "Bei dir sind das (400 + 200) : 2 = 350 Stück.",
+          "Je höher der durchschnittliche Lagerbestand, desto mehr Geld ist im Lager gebunden.",
+          "Darum halten Betriebe ihn möglichst nicht unnötig hoch."
+        ],
+        fehler: 3,
+        erklaerung: "(400 + 200) : 2 = 600 : 2 = 300 Stück, nicht 350. Die Formel war richtig, nur das Ergebnis nicht. Genau solche Fehler sind gefährlich, weil der Rest so überzeugend klingt."
+      }
+    ]
   },
 
   /* ===================== LEVEL 4 ===================== */

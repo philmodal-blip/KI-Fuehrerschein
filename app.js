@@ -247,6 +247,8 @@ function aufgabeZeigen(nummer) {
 
   if (aufgabe.typ === "vergleich") {
     vergleichZeigen(aufgabe, kopf);
+  } else if (aufgabe.typ === "fehler") {
+    fehlerZeigen(aufgabe, kopf);
   } else {
     quizZeigen(aufgabe, kopf);
   }
@@ -341,6 +343,45 @@ function vergleichPruefen(aufgabe, gewaehlt) {
   }
 
   rueckmeldungZeigen(gewaehlt === aufgabe.besser, aufgabe.erklaerung, zusatz);
+}
+
+
+// ----- Aufgabentyp "fehler": tippe auf den falschen Satz -----
+function fehlerZeigen(aufgabe, kopf) {
+  zeigeLevelAnsicht(
+    kopf +
+    '<section class="karte">' +
+      '<p class="situation-titel">🙋 Du hast die KI gefragt:</p>' +
+      '<p>„' + aufgabe.frage + '“</p>' +
+    '</section>' +
+    '<h2 class="frage-klein">🤖 Die KI antwortet – tippe auf den Satz mit dem Fehler:</h2>' +
+    '<div id="antworten" class="ki-sprechblase"></div>' +
+    '<div id="rueckmeldung"></div>'
+  );
+
+  // Jeder Satz der KI-Antwort wird ein eigener Knopf
+  const bereich = document.getElementById("antworten");
+  for (let i = 0; i < aufgabe.saetze.length; i++) {
+    const satzNummer = i + 1;   // Lehrkräfte zählen ab 1
+    bereich.appendChild(neuerKnopf(aufgabe.saetze[i], "antwort satz", function () {
+      fehlerPruefen(aufgabe, satzNummer);
+    }));
+  }
+}
+
+function fehlerPruefen(aufgabe, gewaehlt) {
+  // Sätze sperren: der falsche Satz wird markiert, ein falsch getippter auch
+  const knoepfe = document.querySelectorAll(".antwort");
+  for (let i = 0; i < knoepfe.length; i++) {
+    knoepfe[i].disabled = true;
+    if (i + 1 === aufgabe.fehler) {
+      knoepfe[i].classList.add("richtig");
+    } else if (i + 1 === gewaehlt) {
+      knoepfe[i].classList.add("falsch");
+    }
+  }
+
+  rueckmeldungZeigen(gewaehlt === aufgabe.fehler, aufgabe.erklaerung, "");
 }
 
 
