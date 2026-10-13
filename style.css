@@ -277,6 +277,65 @@ h1, h2 {
   content: "✗ ";
 }
 
+/* ----- Vergleichs-Aufgabe (Level 2) ----- */
+
+/* Kleine Zwischenüberschrift, z. B. "📌 Die Situation" */
+.situation-titel {
+  margin: 0 0 0.25rem;
+  font-weight: bold;
+  color: var(--hauptfarbe-dunkel);
+}
+
+.frage-klein {
+  font-size: 1.2rem;
+}
+
+/* Bei Anfragen kein ✓/✗ vorne, sondern hinter "Anfrage A" */
+.anfrage::before,
+.anfrage.richtig::before,
+.anfrage.falsch::before {
+  content: none;
+}
+
+.anfrage.richtig .anfrage-label::after {
+  content: " ✓ besser";
+}
+
+.anfrage.falsch .anfrage-label::after {
+  content: " ✗";
+}
+
+.anfrage.falsch .anfrage-label {
+  color: var(--fehler);
+}
+
+.anfrage-label {
+  display: block;
+  font-weight: bold;
+  color: var(--hauptfarbe-dunkel);
+  margin-bottom: 0.25rem;
+}
+
+.anfrage-text {
+  display: block;
+  font-style: italic;
+  font-weight: normal;
+}
+
+/* So hätte die KI geantwortet: grauer Chat-Kasten */
+.ki-antwort {
+  background: #f0f2f0;
+  border-radius: 8px;
+  padding: 0.6rem 0.8rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+/* "Auf Anfrage A:" nicht so groß wie die Überschrift "Richtig!" */
+.feedback .ki-antwort strong {
+  font-size: inherit;
+}
+
 /* Erklärung nach dem Antworten */
 .feedback {
   border-left: 6px solid var(--hauptfarbe-dunkel);

@@ -232,16 +232,31 @@ function infoKarteZeigen(nummer) {
   }));
 }
 
-// ----- Eine Frage anzeigen -----
+// ----- Eine Aufgabe anzeigen -----
+// Je nach "typ" der Aufgabe wird sie anders dargestellt.
 function aufgabeZeigen(nummer) {
   schritt = nummer;
   const aufgabe = level.aufgaben[nummer];
   const balkenProzent = (nummer / level.aufgaben.length) * 100;
 
-  zeigeLevelAnsicht(
-    '<p class="schritt-anzeige">Level ' + level.nummer + ' · Frage ' +
+  // Oberer Teil, der bei allen Aufgabentypen gleich ist
+  const kopf =
+    '<p class="schritt-anzeige">Level ' + level.nummer + ' · Aufgabe ' +
       (nummer + 1) + ' von ' + level.aufgaben.length + '</p>' +
-    '<div class="balken"><div class="balken-fuellung" style="width:' + balkenProzent + '%"></div></div>' +
+    '<div class="balken"><div class="balken-fuellung" style="width:' + balkenProzent + '%"></div></div>';
+
+  if (aufgabe.typ === "vergleich") {
+    vergleichZeigen(aufgabe, kopf);
+  } else {
+    quizZeigen(aufgabe, kopf);
+  }
+}
+
+
+// ----- Aufgabentyp "quiz": eine Frage, mehrere Antworten -----
+function quizZeigen(aufgabe, kopf) {
+  zeigeLevelAnsicht(
+    kopf +
     '<section class="karte"><h2>' + aufgabe.frage + '</h2></section>' +
     '<div id="antworten"></div>' +
     '<div id="rueckmeldung"></div>'
@@ -252,16 +267,12 @@ function aufgabeZeigen(nummer) {
   for (let i = 0; i < aufgabe.antworten.length; i++) {
     const antwortNummer = i + 1;   // Lehrkräfte zählen ab 1
     bereich.appendChild(neuerKnopf(aufgabe.antworten[i], "antwort", function () {
-      antwortPruefen(antwortNummer);
+      quizPruefen(aufgabe, antwortNummer);
     }));
   }
 }
 
-// ----- Antwort prüfen und Sofort-Feedback zeigen -----
-function antwortPruefen(gewaehlt) {
-  const aufgabe = level.aufgaben[schritt];
-  const istRichtig = gewaehlt === aufgabe.richtig;
-
+function quizPruefen(aufgabe, gewaehlt) {
   // Alle Antwort-Knöpfe sperren und einfärben
   const knoepfe = document.querySelectorAll(".antwort");
   for (let i = 0; i < knoepfe.length; i++) {
@@ -273,6 +284,71 @@ function antwortPruefen(gewaehlt) {
     }
   }
 
+  rueckmeldungZeigen(gewaehlt === aufgabe.richtig, aufgabe.erklaerung, "");
+}
+
+
+// ----- Aufgabentyp "vergleich": welche von zwei Anfragen ist besser? -----
+function vergleichZeigen(aufgabe, kopf) {
+  zeigeLevelAnsicht(
+    kopf +
+    '<section class="karte">' +
+      '<p class="situation-titel">📌 Die Situation</p>' +
+      '<p>' + aufgabe.situation + '</p>' +
+    '</section>' +
+    '<h2 class="frage-klein">Welche Anfrage an die KI ist besser?</h2>' +
+    '<div id="antworten"></div>' +
+    '<div id="rueckmeldung"></div>'
+  );
+
+  // Die beiden Anfragen als große Knöpfe
+  const texte = { A: aufgabe.anfrageA, B: aufgabe.anfrageB };
+  const bereich = document.getElementById("antworten");
+
+  for (const buchstabe of ["A", "B"]) {
+    const knopf = document.createElement("button");
+    knopf.className = "antwort anfrage";
+    knopf.innerHTML =
+      '<span class="anfrage-label">Anfrage ' + buchstabe + '</span>' +
+      '<span class="anfrage-text">„' + texte[buchstabe] + '“</span>';
+    knopf.addEventListener("click", function () {
+      vergleichPruefen(aufgabe, buchstabe);
+    });
+    bereich.appendChild(knopf);
+  }
+}
+
+function vergleichPruefen(aufgabe, gewaehlt) {
+  // Knöpfe sperren und einfärben (Knopf 0 ist A, Knopf 1 ist B)
+  const knoepfe = document.querySelectorAll(".antwort");
+  const buchstaben = ["A", "B"];
+  for (let i = 0; i < knoepfe.length; i++) {
+    knoepfe[i].disabled = true;
+    if (buchstaben[i] === aufgabe.besser) {
+      knoepfe[i].classList.add("richtig");
+    } else if (buchstaben[i] === gewaehlt) {
+      knoepfe[i].classList.add("falsch");
+    }
+  }
+
+  // Falls vorhanden: zeigen, was die KI auf beide Anfragen geantwortet hätte
+  let zusatz = "";
+  if (aufgabe.ergebnisA && aufgabe.ergebnisB) {
+    zusatz =
+      '<p class="situation-titel">🤖 So hätte die KI geantwortet:</p>' +
+      '<div class="ki-antwort"><strong>Auf Anfrage A:</strong> ' + aufgabe.ergebnisA + '</div>' +
+      '<div class="ki-antwort"><strong>Auf Anfrage B:</strong> ' + aufgabe.ergebnisB + '</div>';
+  }
+
+  rueckmeldungZeigen(gewaehlt === aufgabe.besser, aufgabe.erklaerung, zusatz);
+}
+
+
+// ----- Sofort-Feedback: für alle Aufgabentypen gleich -----
+// istRichtig: true oder false
+// erklaerung: der Text aus aufgaben.js
+// zusatz: weiterer Inhalt unter der Erklärung (oder "")
+function rueckmeldungZeigen(istRichtig, erklaerung, zusatz) {
   // Punkte vergeben
   let ueberschrift;
   if (istRichtig) {
@@ -292,11 +368,12 @@ function antwortPruefen(gewaehlt) {
   rueckmeldung.className = istRichtig ? "karte feedback gut" : "karte feedback schlecht";
   rueckmeldung.innerHTML =
     '<strong>' + ueberschrift + '</strong>' +
-    '<p>' + aufgabe.erklaerung + '</p>';
+    '<p>' + erklaerung + '</p>' +
+    zusatz;
 
-  // Knopf zur nächsten Frage oder zum Ergebnis
+  // Knopf zur nächsten Aufgabe oder zum Ergebnis
   const istLetzte = schritt === level.aufgaben.length - 1;
-  let knopfText = "Nächste Frage";
+  let knopfText = "Nächste Aufgabe";
   if (istLetzte) {
     knopfText = "Zum Ergebnis";
   }

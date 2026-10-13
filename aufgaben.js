@@ -38,6 +38,18 @@
      erklaerung: "Warum das so ist."  ← erscheint nach dem Antworten
    },
 
+   So ist eine Vergleichs-Aufgabe aufgebaut (zwei Anfragen an die KI):
+   {
+     typ: "vergleich",
+     situation: "Was will man erreichen?",
+     anfrageA: "Erste Anfrage an die KI",
+     anfrageB: "Zweite Anfrage an die KI",
+     besser: "B",                     ← "A" oder "B"
+     ergebnisA: "So hätte die KI auf A geantwortet.",   ← darf fehlen
+     ergebnisB: "So hätte die KI auf B geantwortet.",   ← darf fehlen
+     erklaerung: "Warum B besser ist."
+   },
+
    WICHTIG beim Bearbeiten:
    • Texte stehen immer zwischen "Anführungszeichen".
    • Nach jedem Eintrag steht ein Komma.
@@ -187,7 +199,94 @@ const LEVELS = [
     beschreibung: "Welche Anfrage an die KI ist besser – und warum?",
     symbol: "💬",
     abzeichen: "Prompt-Profi",
-    aufgaben: []
+
+    infos: [
+      {
+        titel: "Was ist ein Prompt?",
+        text: "Ein Prompt ist deine Anfrage an die KI. Die KI weiß nur, was du ihr schreibst. Sie kennt deinen Betrieb nicht und kann nicht nachfragen wie eine Kollegin. Darum gilt: Je genauer du fragst, desto besser passt die Antwort."
+      },
+      {
+        titel: "Die Zutaten einer guten Anfrage",
+        text: "Eine gute Anfrage ist wie ein klarer Arbeitsauftrag. Sie sagt der KI:",
+        liste: [
+          "🎯 Aufgabe: Was genau soll die KI tun?",
+          "📋 Infos: Welche Fakten braucht sie? Wer, was, wann, wie viel?",
+          "👥 Empfänger und Ton: Für wen ist es? Höflich, locker oder sachlich?",
+          "📏 Form: Wie lang? Als Mail, Liste oder Tabelle?"
+        ]
+      },
+      {
+        titel: "Nachbessern ist erlaubt",
+        text: "Die erste Antwort passt noch nicht? Schreib einfach weiter, zum Beispiel: „Bitte kürzer.“ oder „Schreib es freundlicher.“ Und: Echte Namen, Adressen oder Kundennummern lässt du weg. Schreib stattdessen einen Platzhalter wie [Kunde]."
+      }
+    ],
+
+    aufgaben: [
+      {
+        typ: "vergleich",
+        situation: "Eine Lieferung ist 3 Tage zu spät. Du willst dem Lieferanten eine Mail schreiben.",
+        anfrageA: "Schreib eine Mail.",
+        anfrageB: "Schreib eine höfliche Mail an einen Lieferanten. Die Lieferung ist 3 Tage zu spät. Frag nach dem neuen Liefertermin. Maximal 5 Sätze.",
+        besser: "B",
+        ergebnisA: "Hallo! Ich hoffe, dir geht es gut. Ich wollte mich einfach mal melden und fragen, wie es so läuft …",
+        ergebnisB: "Sehr geehrte Damen und Herren, unsere Bestellung ist leider bereits 3 Tage überfällig. Bitte teilen Sie uns den neuen Liefertermin mit. Vielen Dank für Ihre rasche Rückmeldung. Mit freundlichen Grüßen",
+        erklaerung: "Anfrage B nennt Empfänger, Grund, Ton, Ziel und Länge. Bei Anfrage A muss die KI raten – und das Ergebnis ist unbrauchbar."
+      },
+      {
+        typ: "vergleich",
+        situation: "Du sollst einem neuen Lehrling das Lagerprinzip FIFO erklären.",
+        anfrageA: "Erkläre das Lagerprinzip FIFO für einen Lehrling im 1. Lehrjahr. Verwende ein Beispiel mit Milchprodukten. Maximal 4 Sätze.",
+        anfrageB: "Was ist FIFO?",
+        besser: "A",
+        ergebnisA: "FIFO heißt „First In – First Out“. Was zuerst ins Lager kommt, geht auch zuerst wieder hinaus. Beispiel: Die Milch, die am Montag geliefert wurde, verkaufst du vor der Milch vom Mittwoch. So läuft nichts ab.",
+        ergebnisB: "FIFO kann vieles bedeuten: ein Verfahren in der Informatik, eine Methode zur Bewertung von Vorräten in der Buchhaltung oder ein Lagerprinzip …",
+        erklaerung: "FIFO gibt es auch in der Informatik und in der Buchhaltung. Anfrage A sagt, worum es geht, für wen die Erklärung ist und wie lang sie sein soll."
+      },
+      {
+        typ: "quiz",
+        frage: "Was fehlt vor allem in dieser Anfrage? „Mach mir eine Tabelle mit Lieferanten.“",
+        antworten: [
+          "Ein „Bitte“ und ein „Danke“.",
+          "Welche Spalten die Tabelle haben soll, z. B. Name, Produkt, Preis, Lieferzeit.",
+          "Mehr Ausrufezeichen, damit die KI sich beeilt.",
+          "Nichts. Die KI weiß schon, was ich brauche.",
+          "Die Uhrzeit, zu der ich frage."
+        ],
+        richtig: 2,
+        erklaerung: "Die KI weiß nicht, welche Infos du brauchst. Nenn die Spalten. Wichtig: Echte Lieferanten-Daten aus dem Betrieb gibst du nur ein, wenn das im Betrieb erlaubt ist. Höflich sein schadet übrigens nicht, ist aber nicht entscheidend."
+      },
+      {
+        typ: "vergleich",
+        situation: "Du brauchst eine Checkliste für die Kontrolle im Wareneingang.",
+        anfrageA: "Ich brauch irgendwas für den Wareneingang, damit da nix schiefgeht, kannst du da was machen, so allgemein halt.",
+        anfrageB: "Erstelle eine Checkliste für die Kontrolle im Wareneingang. Als Liste zum Abhaken, höchstens 8 Punkte. Achte auf Menge, Beschädigung und Lieferschein.",
+        besser: "B",
+        ergebnisA: "Der Wareneingang ist ein wichtiger Teil der Logistik. Er umfasst viele Prozesse wie die Annahme, die Prüfung, die Einlagerung und die Dokumentation. In vielen Unternehmen …",
+        ergebnisB: "☐ Lieferschein mit Bestellung vergleichen ☐ Anzahl der Packstücke zählen ☐ Verpackung auf Schäden prüfen ☐ Schäden am Lieferschein vermerken …",
+        erklaerung: "Anfrage B sagt klar: was (Checkliste), wofür (Wareneingang), welche Form (zum Abhaken, max. 8 Punkte) und worauf es ankommt. Bei Anfrage A kommt nur ein allgemeiner Text heraus."
+      },
+      {
+        typ: "vergleich",
+        situation: "Ein Kunde beschwert sich über eine verspätete Lieferung. Du willst eine Antwort formulieren lassen.",
+        anfrageA: "Schreib eine Antwort an Herrn Johann Berger, Musterstraße 5, 8662 Mitterdorf, Kundennummer 40122. Er beschwert sich über eine verspätete Lieferung.",
+        anfrageB: "Schreib eine freundliche Antwort an einen Kunden, der sich über eine verspätete Lieferung beschwert. Entschuldige dich und biete 5 % Rabatt an. Den Namen setze ich selbst ein.",
+        besser: "B",
+        erklaerung: "Anfrage A enthält Name, Adresse und Kundennummer. Diese Daten gehören nicht in eine KI! Anfrage B ist trotzdem genau: Ton, Entschuldigung und Angebot sind klar. Den Namen ergänzt du danach selbst."
+      },
+      {
+        typ: "quiz",
+        frage: "Die Antwort der KI ist dir zu lang und zu kompliziert. Was machst du am besten?",
+        antworten: [
+          "Ich gebe auf. Die KI kann das nicht.",
+          "Ich stelle genau dieselbe Frage nochmal.",
+          "Ich kopiere die lange Antwort trotzdem.",
+          "Ich schreibe: „Bitte kürzer, in einfachen Worten, maximal 3 Sätze.“",
+          "Ich schreibe nur: „Nein!“"
+        ],
+        richtig: 4,
+        erklaerung: "Du kannst mit der KI weiterschreiben wie in einem Chat. Sag ihr genau, was du anders haben willst: kürzer, einfacher, freundlicher, als Liste …"
+      }
+    ]
   },
 
   /* ===================== LEVEL 3 ===================== */
