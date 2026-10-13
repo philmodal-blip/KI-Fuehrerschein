@@ -102,92 +102,92 @@ const LEVELS = [
         typ: "quiz",
         frage: "Woher „weiß“ ein KI-Chatbot seine Antworten?",
         antworten: [
-          "Ein Mensch tippt jede Antwort live für dich ein.",
-          "Er hat aus riesigen Textmengen gelernt und sagt passende Wörter vorher.",
-          "Er kennt alle Fakten der Welt und irrt sich nie.",
-          "Er kopiert immer die erste Seite aus dem Internet.",
-          "Er schlägt jede Antwort in einem fertigen Lexikon nach."
-        ],
-        richtig: 2,
-        erklaerung: "Ein Chatbot hat aus sehr vielen Texten Muster gelernt. Er berechnet, welche Wörter am besten passen. Darum kann er auch falsche Antworten geben, die gut klingen."
-      },
-      {
-        typ: "quiz",
-        frage: "Eine KI gibt dir eine Antwort, die sehr sicher klingt. Was stimmt?",
-        antworten: [
-          "Wenn sie sicher klingt, stimmt sie auch.",
-          "KI-Antworten werden vorher von Fachleuten geprüft.",
-          "Sie kann trotzdem falsch sein. Wichtiges prüfe ich nach.",
-          "Nur kurze Antworten können falsch sein.",
-          "Eine KI irrt sich nur bei sehr schwierigen Fragen."
-        ],
-        richtig: 3,
-        erklaerung: "Eine KI klingt fast immer sicher, auch wenn sie sich irrt. Niemand prüft die Antworten vorher. Wichtige Angaben solltest du selbst kontrollieren."
-      },
-      {
-        typ: "quiz",
-        frage: "Was bedeutet „Halluzinieren“ bei einer KI?",
-        antworten: [
-          "Die KI erfindet Angaben, die echt klingen, aber nicht stimmen.",
-          "Die KI stürzt ab und muss neu starten.",
-          "Die KI zeigt Bilder statt Text.",
-          "Die KI antwortet besonders kreativ, und das ist immer gut.",
-          "Die KI versteht deine Frage absichtlich falsch."
-        ],
-        richtig: 1,
-        erklaerung: "Beim Halluzinieren erfindet die KI zum Beispiel Zahlen, Namen oder Quellen. Das klingt echt, ist aber falsch. Darum gilt: nachprüfen."
-      },
-      {
-        typ: "quiz",
-        frage: "Welcher Einsatz von KI ist im Betrieb sinnvoll?",
-        antworten: [
-          "Die KI entscheidet allein, welcher Lieferant den Auftrag bekommt.",
-          "Ich lade die Kundenliste mit allen Adressen in die KI hoch.",
-          "Die KI schreibt Rechnungen, die ich ungeprüft verschicke.",
-          "Die KI schreibt einen ersten Entwurf für eine Mail. Ich prüfe ihn dann.",
-          "Ich speichere meine Passwörter in der KI, damit ich sie nicht vergesse."
+          "Er sucht jede Antwort in einer großen Datenbank mit geprüften Fakten.",
+          "Er versteht die Frage wie ein Mensch und denkt dann darüber nach.",
+          "Programmierer haben für sehr viele Fragen fertige Antworten hinterlegt.",
+          "Er hat aus riesigen Textmengen Muster gelernt und berechnet, welche Wörter am besten passen.",
+          "Er sucht immer im Internet und fasst die beste Seite zusammen."
         ],
         richtig: 4,
-        erklaerung: "KI ist gut für Entwürfe und Ideen. Die Entscheidung und die Kontrolle bleiben bei dir. Kundendaten gehören nicht in eine KI."
+        erklaerung: "Ein Chatbot hat keine Datenbank mit geprüften Fakten. Er berechnet aus gelernten Mustern, welche Wörter passen. Manche Chatbots können zusätzlich im Internet suchen – aber auch dann formuliert die KI die Antwort selbst und kann Fehler machen."
       },
       {
         typ: "quiz",
-        frage: "Du fragst eine KI nach dem heutigen Dieselpreis. Warum ist Vorsicht nötig?",
+        frage: "Du stellst einer KI zweimal genau dieselbe Frage und bekommst zwei verschiedene Antworten. Was bedeutet das?",
         antworten: [
-          "Eine KI darf keine Zahlen nennen.",
-          "Ihr Wissen kann veraltet sein. Sie hat nur bis zu einem bestimmten Tag gelernt.",
-          "Preise sind geheim und die KI kennt sie nicht.",
-          "Die KI rechnet absichtlich falsch.",
-          "Die KI kennt jeden Preis, weil sie immer mit dem Internet verbunden ist."
+          "Die KI ist kaputt und sollte nicht verwendet werden.",
+          "Eine der beiden Antworten ist sicher richtig, die andere falsch.",
+          "Die KI wählt ihre Wörter mit etwas Zufall aus. Darum können Antworten verschieden sein – richtig sind sie deshalb noch nicht.",
+          "Die KI hat zwischen den beiden Fragen dazugelernt.",
+          "Die zweite Antwort ist immer die bessere, weil die KI sich verbessert."
         ],
-        richtig: 2,
-        erklaerung: "Viele KIs haben nur bis zu einem Stichtag gelernt. Aktuelle Preise kennen sie oft nicht. Auch wenn die KI im Internet sucht: Prüfe die Quelle."
+        richtig: 3,
+        erklaerung: "Beim Schreiben ist etwas Zufall im Spiel. Darum klingt jede Antwort ein bisschen anders. Es kann auch sein, dass beide Antworten falsch sind. Die KI lernt nicht während deines Gesprächs dazu."
       },
       {
         typ: "quiz",
-        frage: "Eine KI nennt dir den Steuersatz für eine Rechnung. Was machst du?",
+        frage: "Woran erkennst du am sichersten, dass eine KI halluziniert, also etwas erfunden hat?",
         antworten: [
-          "Ich übernehme ihn. Computer rechnen ja immer genau.",
-          "Ich frage die KI nochmal. Sagt sie dasselbe, dann stimmt es.",
-          "Ich nehme einfach den Steuersatz, den ich am öftesten gesehen habe.",
-          "Ich lasse das Feld leer, dann kann nichts falsch sein.",
-          "Ich prüfe ihn in einer verlässlichen Quelle, z. B. auf der WKO-Website."
+          "Die Antwort enthält Rechtschreibfehler.",
+          "Die KI schreibt „vielleicht“ oder „ich bin nicht sicher“.",
+          "Die Antwort ist besonders lang.",
+          "Die KI antwortet besonders schnell.",
+          "Am Text selbst oft gar nicht – nur durch Nachprüfen in einer anderen Quelle."
         ],
         richtig: 5,
-        erklaerung: "Nochmal fragen hilft nicht: Die KI kann denselben Fehler wiederholen. Steuersätze prüfst du in einer verlässlichen Quelle, z. B. bei der WKO oder im Fachbuch."
+        erklaerung: "Erfundene Angaben sehen genauso aus wie richtige: fehlerfrei, sicher formuliert, ohne Warnung. Darum hilft nur eines: in einer verlässlichen Quelle nachprüfen."
       },
       {
         typ: "quiz",
-        frage: "Die KI nennt als Quelle ein Gesetz mit genauer Paragrafen-Nummer. Was stimmt?",
+        frage: "Welcher Einsatz von KI ist im Betrieb am sinnvollsten?",
         antworten: [
-          "Mit Paragrafen-Nummer ist die Angabe sicher richtig.",
-          "Die KI kann auch Quellen erfinden. Ich schaue nach, ob es den Paragrafen wirklich gibt.",
-          "Quellen von einer KI darf man nie verwenden.",
-          "Eine KI nennt nur Quellen, die sie vorher geprüft hat.",
-          "Paragrafen sind im Beruf nicht wichtig."
+          "Die KI sucht den günstigsten Lieferanten aus, und ich bestelle sofort dort.",
+          "Die KI schreibt eine Reklamation. Sie klingt gut, also schicke ich sie gleich ab.",
+          "Die KI gibt mir Ideen, welche Fragen ich einem neuen Lieferanten stellen kann. Ich wähle selbst aus.",
+          "Die KI berechnet den Lagerbestand, und ich trage das Ergebnis direkt ins System ein.",
+          "Ich kopiere eine Kundenbeschwerde mit Name und Adresse in die KI, damit die Antwort persönlich wird."
         ],
-        richtig: 2,
-        erklaerung: "KIs erfinden manchmal Quellen, Gesetze oder Paragrafen. Das sieht sehr echt aus. Österreichische Gesetze kannst du kostenlos im RIS nachlesen (ris.bka.gv.at)."
+        richtig: 3,
+        erklaerung: "Bei Ideen kann die KI gut helfen, und du entscheidest selbst. Bei allen anderen Antworten fehlt die Kontrolle durch dich – oder es landen Kundendaten in der KI."
+      },
+      {
+        typ: "quiz",
+        frage: "Eine KI ohne Internetsuche nennt dir auf die Frage „Wie hoch ist der Dieselpreis in Österreich?“ eine genaue Zahl. Was ist das Problem?",
+        antworten: [
+          "Keines. Eine genaue Zahl zeigt, dass die Antwort stimmt.",
+          "Die KI darf keine Preise nennen.",
+          "Die KI rechnet den Preis aus dem Ölpreis aus, das ist immer genau.",
+          "Die Zahl kann aus alten Lerndaten stammen oder sogar erfunden sein.",
+          "Das einzige Problem: Sie nennt den Preis vielleicht in Dollar."
+        ],
+        richtig: 4,
+        erklaerung: "Eine KI ohne Internetsuche kennt nur, was sie bis zu einem Stichtag gelernt hat. Eine genaue Zahl wirkt glaubwürdig, kann aber veraltet oder erfunden sein."
+      },
+      {
+        typ: "quiz",
+        frage: "Eine KI schreibt: „In Österreich gilt für alle Waren 20 % Umsatzsteuer.“ Was stimmt?",
+        antworten: [
+          "Das stimmt. 20 % gilt für alle Waren.",
+          "Das ist falsch. In Österreich gilt für alle Waren 19 %.",
+          "Das ist nur teilweise richtig. 20 % ist der Normalsatz, für manche Waren gelten ermäßigte Sätze, z. B. 10 % für die meisten Lebensmittel.",
+          "Das stimmt, weil die KI es ohne Einschränkung sagt.",
+          "Das ist falsch. Auf Waren gibt es in Österreich keine Umsatzsteuer."
+        ],
+        richtig: 3,
+        erklaerung: "Ein typischer KI-Fehler: Etwas Richtiges wird zu allgemein gesagt. In Österreich gibt es 20 %, 13 % und 10 %. Achtung: 19 % ist der Satz in Deutschland – KIs verwechseln Österreich und Deutschland oft!"
+      },
+      {
+        typ: "quiz",
+        frage: "Eine KI nennt dir als Beleg einen Paragrafen aus dem Arbeitszeitgesetz, mit genauer Nummer. Was machst du?",
+        antworten: [
+          "Ich übernehme die Angabe. Mit so einer genauen Nummer stimmt sie sicher.",
+          "Ich frage die KI: „Bist du sicher?“ Wenn sie Ja sagt, passt es.",
+          "Ich verwende die Angabe nie, weil KI-Quellen immer erfunden sind.",
+          "Ich nehme das erste Suchergebnis, in dem der Paragraf vorkommt.",
+          "Ich suche den Paragrafen im RIS und lese selbst nach, was dort steht."
+        ],
+        richtig: 5,
+        erklaerung: "KIs erfinden manchmal Paragrafen oder Quellen. Auf „Bist du sicher?“ antworten sie oft trotzdem mit Ja. Österreichische Gesetze liest du kostenlos und verlässlich im RIS nach (ris.bka.gv.at)."
       }
     ]
   },
@@ -224,67 +224,77 @@ const LEVELS = [
     aufgaben: [
       {
         typ: "vergleich",
-        situation: "Eine Lieferung ist 3 Tage zu spät. Du willst dem Lieferanten eine Mail schreiben.",
-        anfrageA: "Schreib eine Mail.",
-        anfrageB: "Schreib eine höfliche Mail an einen Lieferanten. Die Lieferung ist 3 Tage zu spät. Frag nach dem neuen Liefertermin. Maximal 5 Sätze.",
+        situation: "Eine Lieferung ist zu spät. Du willst dem Lieferanten eine Mail schreiben.",
+        anfrageA: "Schreib eine höfliche Mail an unseren Lieferanten wegen der verspäteten Lieferung.",
+        anfrageB: "Schreib eine höfliche Mail an einen Lieferanten. Unsere Bestellung vom 3. März ist 3 Tage überfällig. Bitte um einen neuen Liefertermin bis Freitag. Maximal 5 Sätze.",
         besser: "B",
-        ergebnisA: "Hallo! Ich hoffe, dir geht es gut. Ich wollte mich einfach mal melden und fragen, wie es so läuft …",
-        ergebnisB: "Sehr geehrte Damen und Herren, unsere Bestellung ist leider bereits 3 Tage überfällig. Bitte teilen Sie uns den neuen Liefertermin mit. Vielen Dank für Ihre rasche Rückmeldung. Mit freundlichen Grüßen",
-        erklaerung: "Anfrage B nennt Empfänger, Grund, Ton, Ziel und Länge. Bei Anfrage A muss die KI raten – und das Ergebnis ist unbrauchbar."
+        ergebnisA: "Sehr geehrte Damen und Herren, leider ist unsere Lieferung verspätet. Wir bitten Sie, uns mitzuteilen, wann wir mit [Lieferdatum] rechnen können … (Die KI muss Lücken lassen oder erfinden.)",
+        ergebnisB: "Sehr geehrte Damen und Herren, unsere Bestellung vom 3. März ist leider bereits 3 Tage überfällig. Bitte teilen Sie uns bis Freitag einen neuen Liefertermin mit. Vielen Dank für Ihre rasche Rückmeldung. Mit freundlichen Grüßen",
+        erklaerung: "Beide Anfragen sind höflich. Aber nur B enthält die Fakten (Datum, wie viele Tage), ein klares Ziel (neuer Termin bis Freitag) und die Länge. Bei A muss die KI Lücken lassen oder Details erfinden."
       },
       {
         typ: "vergleich",
         situation: "Du sollst einem neuen Lehrling das Lagerprinzip FIFO erklären.",
-        anfrageA: "Erkläre das Lagerprinzip FIFO für einen Lehrling im 1. Lehrjahr. Verwende ein Beispiel mit Milchprodukten. Maximal 4 Sätze.",
-        anfrageB: "Was ist FIFO?",
+        anfrageA: "Erkläre das Lagerprinzip FIFO für einen Lehrling im 1. Lehrjahr. Verwende ein Beispiel aus einem Lebensmittellager. Maximal 4 Sätze.",
+        anfrageB: "Erkläre FIFO bitte einfach und kurz.",
         besser: "A",
-        ergebnisA: "FIFO heißt „First In – First Out“. Was zuerst ins Lager kommt, geht auch zuerst wieder hinaus. Beispiel: Die Milch, die am Montag geliefert wurde, verkaufst du vor der Milch vom Mittwoch. So läuft nichts ab.",
-        ergebnisB: "FIFO kann vieles bedeuten: ein Verfahren in der Informatik, eine Methode zur Bewertung von Vorräten in der Buchhaltung oder ein Lagerprinzip …",
-        erklaerung: "FIFO gibt es auch in der Informatik und in der Buchhaltung. Anfrage A sagt, worum es geht, für wen die Erklärung ist und wie lang sie sein soll."
+        ergebnisA: "FIFO heißt „First In – First Out“. Was zuerst ins Lager kommt, geht auch zuerst wieder hinaus. Beispiel: Die Milch vom Montag wird vor der Milch vom Mittwoch ausgeliefert. So läuft nichts ab.",
+        ergebnisB: "FIFO bedeutet „First In – First Out“. In der Informatik ist das eine Warteschlange, in der Buchhaltung eine Methode zur Bewertung von Vorräten …",
+        erklaerung: "„Einfach und kurz“ klingt gut, reicht aber nicht: FIFO gibt es auch in der Informatik und in der Buchhaltung. Anfrage A sagt, worum es geht (Lager), für wen (1. Lehrjahr), mit welchem Beispiel und wie lang."
       },
       {
         typ: "quiz",
-        frage: "Was fehlt vor allem in dieser Anfrage? „Mach mir eine Tabelle mit Lieferanten.“",
+        frage: "Welche Anfrage liefert die brauchbarste Tabelle für einen Lieferantenvergleich?",
         antworten: [
-          "Ein „Bitte“ und ein „Danke“.",
-          "Welche Spalten die Tabelle haben soll, z. B. Name, Produkt, Preis, Lieferzeit.",
-          "Mehr Ausrufezeichen, damit die KI sich beeilt.",
-          "Nichts. Die KI weiß schon, was ich brauche.",
-          "Die Uhrzeit, zu der ich frage."
+          "„Mach eine schöne, übersichtliche Tabelle mit allen wichtigen Lieferanten.“",
+          "„Mach eine Tabelle mit Lieferanten, Produkten, Preisen und so weiter.“",
+          "„Bitte mach mir ganz schnell eine gute Tabelle mit Lieferanten!“",
+          "„Mach eine Tabelle mit den Spalten Lieferant, Produkt, Preis pro Stück und Lieferzeit in Tagen. Die Angebote füge ich unten ein.“",
+          "„Mach eine Tabelle mit den besten Lieferanten für unseren Betrieb.“"
         ],
-        richtig: 2,
-        erklaerung: "Die KI weiß nicht, welche Infos du brauchst. Nenn die Spalten. Wichtig: Echte Lieferanten-Daten aus dem Betrieb gibst du nur ein, wenn das im Betrieb erlaubt ist. Höflich sein schadet übrigens nicht, ist aber nicht entscheidend."
+        richtig: 4,
+        erklaerung: "Nur hier sind die Spalten klar, und die KI bekommt die echten Angebote. Bei den anderen weiß die KI nicht, welche Lieferanten gemeint sind – sie würde Firmen und Preise erfinden. Achtung: Betriebsdaten nur eingeben, wenn das im Betrieb erlaubt ist."
       },
       {
         typ: "vergleich",
         situation: "Du brauchst eine Checkliste für die Kontrolle im Wareneingang.",
-        anfrageA: "Ich brauch irgendwas für den Wareneingang, damit da nix schiefgeht, kannst du da was machen, so allgemein halt.",
-        anfrageB: "Erstelle eine Checkliste für die Kontrolle im Wareneingang. Als Liste zum Abhaken, höchstens 8 Punkte. Achte auf Menge, Beschädigung und Lieferschein.",
-        besser: "B",
-        ergebnisA: "Der Wareneingang ist ein wichtiger Teil der Logistik. Er umfasst viele Prozesse wie die Annahme, die Prüfung, die Einlagerung und die Dokumentation. In vielen Unternehmen …",
-        ergebnisB: "☐ Lieferschein mit Bestellung vergleichen ☐ Anzahl der Packstücke zählen ☐ Verpackung auf Schäden prüfen ☐ Schäden am Lieferschein vermerken …",
-        erklaerung: "Anfrage B sagt klar: was (Checkliste), wofür (Wareneingang), welche Form (zum Abhaken, max. 8 Punkte) und worauf es ankommt. Bei Anfrage A kommt nur ein allgemeiner Text heraus."
+        anfrageA: "Erstelle eine Checkliste für die Kontrolle im Wareneingang. Zum Abhaken, höchstens 8 Punkte. Achte auf Menge, Beschädigung und Lieferschein.",
+        anfrageB: "Erstelle eine sehr ausführliche und vollständige Checkliste für den Wareneingang mit allem, was wichtig ist.",
+        besser: "A",
+        ergebnisA: "☐ Lieferschein mit Bestellung vergleichen ☐ Anzahl der Packstücke zählen ☐ Verpackung auf Schäden prüfen ☐ Schäden am Lieferschein vermerken …",
+        ergebnisB: "1. Vorbereitung der Rampe 2. Prüfung der Fahrzeugpapiere 3. Kontrolle der Ladungssicherung … 27. Archivierung der Unterlagen 28. Feedback an den Einkauf …",
+        erklaerung: "„Ausführlich und vollständig“ klingt gründlich. Heraus kommt aber eine sehr lange Liste, die im Alltag niemand verwendet. Anfrage A sagt genau, worauf es ankommt und wie lang die Liste sein darf."
       },
       {
         typ: "vergleich",
         situation: "Ein Kunde beschwert sich über eine verspätete Lieferung. Du willst eine Antwort formulieren lassen.",
-        anfrageA: "Schreib eine Antwort an Herrn Johann Berger, Musterstraße 5, 8662 Mitterdorf, Kundennummer 40122. Er beschwert sich über eine verspätete Lieferung.",
-        anfrageB: "Schreib eine freundliche Antwort an einen Kunden, der sich über eine verspätete Lieferung beschwert. Entschuldige dich und biete 5 % Rabatt an. Den Namen setze ich selbst ein.",
+        anfrageA: "Schreib eine freundliche Antwort an einen Kunden, der sich über eine verspätete Lieferung beschwert. Entschuldige dich und biete 5 % Rabatt an. Den Namen setze ich selbst ein.",
+        anfrageB: "Schreib eine freundliche Antwort an Herrn Johann Berger, Musterstraße 5, 8662 Mitterdorf, Kundennummer 40122. Er beschwert sich über eine verspätete Lieferung. Entschuldige dich und biete 5 % Rabatt an.",
+        besser: "A",
+        erklaerung: "Anfrage B ist genauer – aber sie enthält Name, Adresse und Kundennummer. Diese Daten gehören nicht in eine KI! Anfrage A liefert dasselbe gute Ergebnis. Den Namen ergänzt du danach selbst."
+      },
+      {
+        typ: "vergleich",
+        situation: "Dein Betrieb kauft Paletten. Du sollst die Angebote von Lieferant Huber und Lieferant Maier vergleichen. Du findest Huber sympathischer.",
+        anfrageA: "Ich finde Huber besser. Nenne mir Gründe, warum Huber der bessere Lieferant ist. Die Angebote füge ich unten ein.",
+        anfrageB: "Vergleiche die beiden Angebote unten nach Preis, Lieferzeit und Zahlungsbedingungen. Nenne Vor- und Nachteile von beiden.",
         besser: "B",
-        erklaerung: "Anfrage A enthält Name, Adresse und Kundennummer. Diese Daten gehören nicht in eine KI! Anfrage B ist trotzdem genau: Ton, Entschuldigung und Angebot sind klar. Den Namen ergänzt du danach selbst."
+        ergebnisA: "Huber ist eine gute Wahl: Das Angebot ist übersichtlich, die Firma wirkt zuverlässig, und … (Die KI sucht nur Argumente für Huber.)",
+        ergebnisB: "Huber: Preis 12,50 € pro Stück, Lieferzeit 10 Tage. Maier: Preis 11,90 € pro Stück, Lieferzeit 4 Tage, aber Zahlung sofort statt nach 30 Tagen …",
+        erklaerung: "KIs geben dir gern recht. Wer schon seine Meinung in die Anfrage schreibt, bekommt nur Argumente dafür. Anfrage B ist neutral und nennt klare Vergleichspunkte. So entscheidest du selbst."
       },
       {
         typ: "quiz",
-        frage: "Die Antwort der KI ist dir zu lang und zu kompliziert. Was machst du am besten?",
+        frage: "Die KI hat eine Reklamation geschrieben. Sie ist zu unfreundlich und zu lang. Welche Nachricht an die KI bringt am meisten?",
         antworten: [
-          "Ich gebe auf. Die KI kann das nicht.",
-          "Ich stelle genau dieselbe Frage nochmal.",
-          "Ich kopiere die lange Antwort trotzdem.",
-          "Ich schreibe: „Bitte kürzer, in einfachen Worten, maximal 3 Sätze.“",
-          "Ich schreibe nur: „Nein!“"
+          "„Kürzer.“",
+          "„Das ist schlecht. Nochmal.“",
+          "„Schreib es komplett neu und ganz anders.“",
+          "„Mach es besser, du kannst das.“",
+          "„Schreib es freundlicher, aber bleib bestimmt. Höchstens 5 Sätze. Der neue Liefertermin muss drinbleiben.“"
         ],
-        richtig: 4,
-        erklaerung: "Du kannst mit der KI weiterschreiben wie in einem Chat. Sag ihr genau, was du anders haben willst: kürzer, einfacher, freundlicher, als Liste …"
+        richtig: 5,
+        erklaerung: "„Kürzer“ löst nur eines der beiden Probleme. Die beste Nachricht sagt genau, was sich ändern soll (Ton, Länge) und was bleiben muss (der Liefertermin)."
       }
     ]
   },
