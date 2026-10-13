@@ -160,6 +160,8 @@ let schritt = 0;           // Nummer der aktuellen Frage (0 = erste)
 let richtige = 0;          // wie viele Antworten bisher richtig waren
 let levelPunkte = 0;       // Punkte in diesem Durchgang
 let ersterVersuch = true;  // wird das Level zum ersten Mal gespielt? (für den Bonus)
+let serie = 0;             // wie viele richtige Antworten hintereinander
+let stapel = { gruen: 0, gelb: 0, rot: 0 };   // sortierte Karten bei der Ampel
 
 // Zeigt die Level-Ansicht mit neuem Inhalt und versteckt die Startseite
 function zeigeLevelAnsicht(html) {
@@ -184,6 +186,8 @@ function levelStarten(gewaehltesLevel) {
   schritt = 0;
   richtige = 0;
   levelPunkte = 0;
+  serie = 0;
+  stapel = { gruen: 0, gelb: 0, rot: 0 };
   ersterVersuch = fortschritt.levels[level.nummer] === undefined;
 
   if (level.infos && level.infos.length > 0) {
@@ -249,6 +253,8 @@ function aufgabeZeigen(nummer) {
     vergleichZeigen(aufgabe, kopf);
   } else if (aufgabe.typ === "fehler") {
     fehlerZeigen(aufgabe, kopf);
+  } else if (aufgabe.typ === "ampel") {
+    ampelZeigen(aufgabe, kopf);
   } else {
     quizZeigen(aufgabe, kopf);
   }
@@ -385,6 +391,95 @@ function fehlerPruefen(aufgabe, gewaehlt) {
 }
 
 
+// ----- Aufgabentyp "ampel": Datenkarte auf Grün, Gelb oder Rot sortieren -----
+
+// Die drei Ampel-Farben mit ihrer Beschriftung
+const AMPEL = [
+  { farbe: "gruen", text: "Grün – darf in die KI",    symbol: "🟢" },
+  { farbe: "gelb",  text: "Gelb – nur anonymisiert",  symbol: "🟡" },
+  { farbe: "rot",   text: "Rot – niemals",            symbol: "🔴" }
+];
+
+// Erlaubt auch "grün" mit ü, falls jemand das so in aufgaben.js schreibt
+function farbeOhneUmlaut(farbe) {
+  return farbe.toLowerCase().replace("ü", "ue");
+}
+
+function ampelZeigen(aufgabe, kopf) {
+  zeigeLevelAnsicht(
+    kopf +
+    // Die drei Stapel oben zeigen, wie viele Karten schon sortiert sind
+    '<div class="stapel-reihe">' +
+      '<span class="stapel" id="stapel-gruen">🟢 ' + stapel.gruen + '</span>' +
+      '<span class="stapel" id="stapel-gelb">🟡 ' + stapel.gelb + '</span>' +
+      '<span class="stapel" id="stapel-rot">🔴 ' + stapel.rot + '</span>' +
+    '</div>' +
+    // Die Datenkarte
+    '<div class="datenkarte" id="datenkarte">' +
+      '<div class="datenkarte-symbol">' + aufgabe.symbol + '</div>' +
+      '<p>' + aufgabe.daten + '</p>' +
+    '</div>' +
+    '<h2 class="frage-klein ampel-frage">Darf das in die KI?</h2>' +
+    '<div id="antworten" class="ampel"></div>' +
+    '<div id="rueckmeldung"></div>'
+  );
+
+  // Die Ampel: drei Lichter als Knöpfe
+  const bereich = document.getElementById("antworten");
+  for (const licht of AMPEL) {
+    const knopf = document.createElement("button");
+    knopf.className = "ampel-licht " + licht.farbe;
+    knopf.innerHTML = '<span class="licht"></span><span>' + licht.text + '</span>';
+    knopf.addEventListener("click", function () {
+      ampelPruefen(aufgabe, licht.farbe);
+    });
+    bereich.appendChild(knopf);
+  }
+}
+
+function ampelPruefen(aufgabe, gewaehlt) {
+  const richtigeFarbe = farbeOhneUmlaut(aufgabe.farbe);
+  const istRichtig = gewaehlt === richtigeFarbe;
+
+  // Lichter sperren: die richtige Farbe leuchtet, eine falsche Wahl bekommt ein ✗
+  const knoepfe = document.querySelectorAll(".ampel-licht");
+  for (let i = 0; i < knoepfe.length; i++) {
+    knoepfe[i].disabled = true;
+    if (AMPEL[i].farbe === richtigeFarbe) {
+      knoepfe[i].classList.add("an");
+    } else if (AMPEL[i].farbe === gewaehlt) {
+      knoepfe[i].classList.add("falsch");
+    }
+  }
+
+  // Stempel auf die Karte drücken
+  let richtigesLicht = AMPEL[0];
+  for (const licht of AMPEL) {
+    if (licht.farbe === richtigeFarbe) {
+      richtigesLicht = licht;
+    }
+  }
+  const stempel = document.createElement("div");
+  stempel.className = "stempel " + richtigeFarbe;
+  stempel.textContent = richtigesLicht.symbol + " " + richtigesLicht.text.split(" – ")[0].toUpperCase();
+  document.getElementById("datenkarte").appendChild(stempel);
+
+  // Karte kommt auf den richtigen Stapel
+  stapel[richtigeFarbe] = stapel[richtigeFarbe] + 1;
+  const stapelAnzeige = document.getElementById("stapel-" + richtigeFarbe);
+  stapelAnzeige.textContent = richtigesLicht.symbol + " " + stapel[richtigeFarbe];
+  stapelAnzeige.classList.add("hupf");
+
+  // Bei falscher Wahl: sagen, was richtig gewesen wäre
+  let erklaerung = aufgabe.erklaerung;
+  if (!istRichtig) {
+    erklaerung = '<b>Richtig wäre: ' + richtigesLicht.symbol + ' ' + richtigesLicht.text + '.</b><br>' + erklaerung;
+  }
+
+  rueckmeldungZeigen(istRichtig, erklaerung, "");
+}
+
+
 // ----- Sofort-Feedback: für alle Aufgabentypen gleich -----
 // istRichtig: true oder false
 // erklaerung: der Text aus aufgaben.js
@@ -399,8 +494,14 @@ function rueckmeldungZeigen(istRichtig, erklaerung, zusatz) {
     }
     richtige = richtige + 1;
     levelPunkte = levelPunkte + punkte;
+    serie = serie + 1;
     ueberschrift = "✅ Richtig! +" + punkte + " Punkte";
+    // Ab 3 richtigen Antworten hintereinander gibt es eine Serien-Anzeige
+    if (serie >= 3) {
+      ueberschrift = ueberschrift + " · 🔥 " + serie + " in Folge!";
+    }
   } else {
+    serie = 0;
     ueberschrift = "❌ Leider falsch.";
   }
 

@@ -63,6 +63,15 @@
      erklaerung: "Was falsch ist und was richtig wäre."
    },
 
+   So ist eine Ampel-Karte aufgebaut (Datenschutz-Ampel):
+   {
+     typ: "ampel",
+     symbol: "🔑",                    ← ein Emoji für die Karte
+     daten: "Welche Daten auf der Karte stehen",
+     farbe: "rot",                    ← "gruen", "gelb" oder "rot"
+     erklaerung: "Warum diese Farbe."
+   },
+
    WICHTIG beim Bearbeiten:
    • Texte stehen immer zwischen "Anführungszeichen".
    • Nach jedem Eintrag steht ein Komma.
@@ -433,7 +442,99 @@ const LEVELS = [
     beschreibung: "Welche Daten dürfen in die KI? Grün, Gelb oder Rot?",
     symbol: "🚦",
     abzeichen: "Datenschützer:in",
-    aufgaben: []
+
+    infos: [
+      {
+        titel: "Warum Datenschutz bei KI?",
+        text: "Was du in eine KI eintippst, verlässt deinen Betrieb. Es landet auf den Servern des Anbieters, oft in anderen Ländern. Manche Anbieter verwenden Eingaben, um ihre KI weiter zu trainieren. Zurückholen kannst du nichts mehr. In der EU schützt die DSGVO persönliche Daten – und du bist mitverantwortlich."
+      },
+      {
+        titel: "Die Datenschutz-Ampel",
+        text: "Bevor du etwas in eine KI eingibst, frag dich: Welche Farbe hat das?",
+        liste: [
+          "🟢 Grün – darf in die KI: allgemeine Fragen, öffentliche Infos, Daten ohne Bezug zu Personen oder zum Betrieb.",
+          "🟡 Gelb – nur anonymisiert: Namen, Nummern und Adressen vorher entfernen oder durch Platzhalter ersetzen.",
+          "🔴 Rot – niemals: Passwörter, Bankdaten, Gesundheitsdaten, Ausweise, Name mit Adresse."
+        ]
+      },
+      {
+        titel: "Anonymisieren – so geht's",
+        text: "Ersetze alles, was auf eine Person oder Firma hinweist, durch einen Platzhalter. Aus „Frau Huber, Kundennummer 40122, beschwert sich über …“ wird „[Kundin] beschwert sich über …“. Im Zweifel gilt: Rot. Und frag nach, ob dein Betrieb eigene KI-Regeln hat."
+      }
+    ],
+
+    aufgaben: [
+      {
+        typ: "ampel",
+        symbol: "🌍",
+        daten: "Eine allgemeine Frage: „Was bedeutet die Incoterms-Klausel FCA?“",
+        farbe: "gruen",
+        erklaerung: "Eine allgemeine Fachfrage enthält keine Daten über Personen oder deinen Betrieb. Das darf in die KI."
+      },
+      {
+        typ: "ampel",
+        symbol: "🔑",
+        daten: "Das Passwort für das Warenwirtschaftssystem deines Betriebs",
+        farbe: "rot",
+        erklaerung: "Passwörter gehören niemals in eine KI – auch nicht, um „nur kurz“ etwas zu fragen. Wer es liest, hat Zugang zu euren Systemen."
+      },
+      {
+        typ: "ampel",
+        symbol: "✉️",
+        daten: "Eine Kundenbeschwerde mit Name und Kundennummer, auf die du antworten willst",
+        farbe: "gelb",
+        erklaerung: "Der Inhalt der Beschwerde hilft der KI. Name und Kundennummer braucht sie nicht. Ersetze sie durch [Kunde] und [Nummer] – dann ist es in Ordnung."
+      },
+      {
+        typ: "ampel",
+        symbol: "📦",
+        daten: "Ein anonymisierter Lagerbestand: „Artikel A: 120 Stück, Artikel B: 45 Stück, Artikel C: 300 Stück“",
+        farbe: "gruen",
+        erklaerung: "Diese Liste ist schon anonymisiert: keine Artikelnamen, keine Preise, kein Firmenname. Damit kann niemand etwas über deinen Betrieb herausfinden."
+      },
+      {
+        typ: "ampel",
+        symbol: "🏠",
+        daten: "Name und Lieferadresse einer Kundin: „Maria Huber, Hauptplatz 3, 8662 Mitterdorf“",
+        farbe: "rot",
+        erklaerung: "Name mit Adresse sind persönliche Daten, die eine Person eindeutig erkennbar machen. Ohne Name und Adresse bleibt hier nichts Brauchbares übrig – darum: Rot."
+      },
+      {
+        typ: "ampel",
+        symbol: "📋",
+        daten: "Die echte Lagerliste deines Betriebs mit Einkaufspreisen und Namen der Lieferanten",
+        farbe: "gelb",
+        erklaerung: "Einkaufspreise und Lieferanten sind Geschäftsgeheimnisse. Ersetze die Namen durch „Lieferant 1, 2, 3“ und lass die Preise weg oder runde sie. Dann kann die KI trotzdem helfen."
+      },
+      {
+        typ: "ampel",
+        symbol: "🏦",
+        daten: "Die IBAN eines Lieferanten, um eine Zahlung zu prüfen",
+        farbe: "rot",
+        erklaerung: "Bankdaten gehören nie in eine KI. Eine IBAN prüfst du im Betrieb mit den hinterlegten Stammdaten – nicht mit einer KI."
+      },
+      {
+        typ: "ampel",
+        symbol: "🌐",
+        daten: "Eine Produktbeschreibung von der öffentlichen Website eines Lieferanten",
+        farbe: "gruen",
+        erklaerung: "Was ohnehin öffentlich im Internet steht, ist kein Geheimnis. Du darfst die KI bitten, den Text zusammenzufassen oder zu vergleichen."
+      },
+      {
+        typ: "ampel",
+        symbol: "🤒",
+        daten: "Die Krankmeldung eines Kollegen mit Name und Diagnose",
+        farbe: "rot",
+        erklaerung: "Gesundheitsdaten sind laut DSGVO besonders geschützt. Sie gehören niemals in eine KI. Wenn du einen Dienstplan umplanen willst, reicht: „Eine Person fällt 3 Wochen aus.“"
+      },
+      {
+        typ: "ampel",
+        symbol: "📝",
+        daten: "Das Protokoll einer Teambesprechung mit den Namen aller Kolleg:innen – du willst eine Zusammenfassung",
+        farbe: "gelb",
+        erklaerung: "Für eine Zusammenfassung braucht die KI keine Namen. Ersetze sie durch Rollen wie „Lagerleitung“ oder „Lehrling 1“. Steht etwas Vertrauliches drin, lass es ganz weg."
+      }
+    ]
   },
 
   /* ===================== LEVEL 5 ===================== */

@@ -367,6 +367,179 @@ h1, h2 {
   content: "🔍 Hier ist der Fehler: ";
 }
 
+/* ----- Datenschutz-Ampel (Level 4) ----- */
+
+/* Die drei Stapel oben: 🟢 2  🟡 1  🔴 3 */
+.stapel-reihe {
+  display: flex;
+  justify-content: space-around;
+  margin: 0.75rem 0;
+}
+
+.stapel {
+  background: var(--karte);
+  border-radius: 999px;
+  padding: 0.3rem 1rem;
+  font-weight: bold;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Stapel hüpft kurz, wenn eine Karte dazukommt */
+.stapel.hupf {
+  animation: hupf 0.5s;
+}
+
+@keyframes hupf {
+  50% { transform: scale(1.3); }
+}
+
+/* Die Datenkarte sieht aus wie eine Spielkarte */
+.datenkarte {
+  position: relative;         /* damit der Stempel darauf liegen kann */
+  background: var(--karte);
+  border: 3px solid var(--text);
+  border-radius: 16px;
+  padding: 1rem 1.25rem;
+  margin: 0.5rem auto 1rem;
+  max-width: 340px;
+  min-height: 170px;
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: bold;
+  box-shadow: 4px 6px 0 rgba(0, 0, 0, 0.15);
+  transform: rotate(-1.5deg);
+  animation: karte-rein 0.4s ease-out;
+}
+
+/* Karte fliegt von rechts herein */
+@keyframes karte-rein {
+  from {
+    opacity: 0;
+    transform: translateX(80px) rotate(8deg);
+  }
+}
+
+.datenkarte-symbol {
+  font-size: 3rem;
+}
+
+/* Der Stempel, der nach dem Antworten auf die Karte gedrückt wird */
+.stempel {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  padding: 0.2rem 0.6rem;
+  border: 3px solid;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.9);
+  font-size: 1rem;
+  transform: rotate(12deg);
+  animation: stempeln 0.3s ease-in;
+}
+
+@keyframes stempeln {
+  from {
+    opacity: 0;
+    transform: scale(2.5) rotate(12deg);
+  }
+}
+
+.stempel.gruen { color: #2e7d32; }
+.stempel.gelb  { color: #b38600; }
+.stempel.rot   { color: #c62828; }
+
+.ampel-frage {
+  text-align: center;
+}
+
+/* Das Ampel-Gehäuse: dunkel mit runden Ecken */
+.ampel {
+  background: #2b2f2b;
+  border-radius: 28px;
+  padding: 0.75rem;
+  max-width: 340px;
+  margin: 0 auto 1rem;
+}
+
+/* Ein Licht der Ampel (der ganze Streifen ist der Knopf) */
+.ampel-licht {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  min-height: 72px;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: white;
+  font: inherit;
+  font-weight: bold;
+  text-align: left;
+  cursor: pointer;
+}
+
+.ampel-licht:last-child {
+  margin-bottom: 0;
+}
+
+.ampel-licht:hover:enabled {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Die runde Lampe – zuerst etwas gedimmt */
+.licht {
+  flex-shrink: 0;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  opacity: 0.45;
+  transition: opacity 0.3s, box-shadow 0.3s;
+}
+
+.gruen .licht { background: #43a047; }
+.gelb  .licht { background: #fbc02d; }
+.rot   .licht { background: #e53935; }
+
+/* Beim Darüberfahren und bei der richtigen Farbe leuchtet die Lampe */
+.ampel-licht:hover:enabled .licht,
+.ampel-licht.an .licht {
+  opacity: 1;
+}
+
+.gruen.an .licht { box-shadow: 0 0 20px 6px #43a047; }
+.gelb.an  .licht { box-shadow: 0 0 20px 6px #fbc02d; }
+.rot.an   .licht { box-shadow: 0 0 20px 6px #e53935; }
+
+/* Nach dem Antworten: nicht gewählte Lichter dunkel */
+.ampel-licht:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+.ampel-licht.an,
+.ampel-licht.falsch {
+  opacity: 1;
+}
+
+.ampel-licht.falsch::after {
+  content: "✗";
+  margin-left: auto;
+  padding-right: 0.75rem;
+  font-size: 1.6rem;
+  color: #ff8a80;
+}
+
+/* Wer Animationen im System abgeschaltet hat, bekommt keine */
+@media (prefers-reduced-motion: reduce) {
+  .datenkarte,
+  .stempel,
+  .stapel.hupf {
+    animation: none;
+  }
+}
+
 /* Erklärung nach dem Antworten */
 .feedback {
   border-left: 6px solid var(--hauptfarbe-dunkel);
