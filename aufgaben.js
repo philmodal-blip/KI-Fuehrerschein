@@ -169,12 +169,12 @@ const LEVELS = [
         antworten: [
           "Das stimmt. 20 % gilt für alle Waren.",
           "Das ist falsch. In Österreich gilt für alle Waren 19 %.",
-          "Das ist nur teilweise richtig. 20 % ist der Normalsatz, für manche Waren gelten ermäßigte Sätze, z. B. 10 % für die meisten Lebensmittel.",
+          "Das ist nur teilweise richtig. 20 % ist der Normalsatz, für manche Waren gelten ermäßigte Sätze, z. B. 4,9 % für bestimmte Grundnahrungsmittel wie Milch oder Eier.",
           "Das stimmt, weil die KI es ohne Einschränkung sagt.",
           "Das ist falsch. Auf Waren gibt es in Österreich keine Umsatzsteuer."
         ],
         richtig: 3,
-        erklaerung: "Ein typischer KI-Fehler: Etwas Richtiges wird zu allgemein gesagt. In Österreich gibt es 20 %, 13 % und 10 %. Achtung: 19 % ist der Satz in Deutschland – KIs verwechseln Österreich und Deutschland oft!"
+        erklaerung: "Ein typischer KI-Fehler: Etwas Richtiges wird zu allgemein gesagt. In Österreich gibt es 20 %, 13 %, 10 % und seit 1. Juli 2026 auch 4,9 % für bestimmte Grundnahrungsmittel. Eine KI mit altem Wissen kennt den neuen Satz vielleicht gar nicht! Und: 19 % ist der Satz in Deutschland – KIs verwechseln Österreich und Deutschland oft."
       },
       {
         typ: "quiz",
