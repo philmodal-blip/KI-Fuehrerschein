@@ -198,12 +198,23 @@ function infoKarteZeigen(nummer) {
   const info = level.infos[nummer];
   const istLetzte = nummer === level.infos.length - 1;
 
+  // Falls die Karte eine Aufzählung hat: jeden Punkt als Listen-Eintrag
+  let listeHtml = "";
+  if (info.liste) {
+    listeHtml = '<ul class="info-liste">';
+    for (const punkt of info.liste) {
+      listeHtml = listeHtml + '<li>' + punkt + '</li>';
+    }
+    listeHtml = listeHtml + '</ul>';
+  }
+
   const ansicht = zeigeLevelAnsicht(
     '<p class="schritt-anzeige">Level ' + level.nummer + ' · Info ' +
       (nummer + 1) + ' von ' + level.infos.length + '</p>' +
     '<section class="karte">' +
       '<h2>' + info.titel + '</h2>' +
       '<p>' + info.text + '</p>' +
+      listeHtml +
     '</section>'
   );
 

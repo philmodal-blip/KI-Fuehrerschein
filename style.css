@@ -182,6 +182,20 @@ h1, h2 {
   color: var(--hauptfarbe-dunkel);
 }
 
+/* Aufzählung auf einer Info-Karte: jeder Punkt in einem hellgrünen Kästchen */
+.info-liste {
+  list-style: none;           /* keine Punkte, die Emojis ersetzen sie */
+  padding: 0;
+  margin: 0;
+}
+
+.info-liste li {
+  background: var(--hauptfarbe-hell);
+  border-radius: 8px;
+  padding: 0.6rem 0.8rem;
+  margin-bottom: 0.5rem;
+}
+
 /* Kleiner Knopf oben: zurück zur Startseite */
 .zurueck {
   background: none;

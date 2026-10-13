@@ -17,7 +17,11 @@
    So ist eine Erklär-Karte aufgebaut:
    {
      titel: "Was ist KI?",
-     text: "Kurze Sätze. Einfache Wörter."
+     text: "Kurze Sätze. Einfache Wörter.",
+     liste: [                         ← darf fehlen: Aufzählung unter dem Text
+       "Erster Punkt",
+       "Zweiter Punkt"
+     ]
    },
 
    So ist eine Quiz-Aufgabe aufgebaut:
@@ -66,6 +70,16 @@ const LEVELS = [
         text: "KI-Antworten klingen oft sehr sicher. Trotzdem können sie falsch sein. Manchmal erfindet die KI sogar Dinge. Das nennt man „Halluzinieren“. Auch ihr Wissen kann veraltet sein. Prüfe darum wichtige Angaben wie Zahlen, Preise oder Gesetze."
       },
       {
+        titel: "So prüfst du eine KI-Antwort",
+        text: "Mit diesen 4 Schritten erkennst du viele Fehler:",
+        liste: [
+          "🤔 Mitdenken: Klingt das logisch? Passt es zu dem, was du schon weißt?",
+          "🧮 Nachrechnen: Mengen, Preise und Prozente selbst kontrollieren.",
+          "📚 Vergleichen: eine zweite, verlässliche Quelle suchen, z. B. Fachbuch, WKO-Website oder Gesetzestext.",
+          "🙋 Nachfragen: Im Zweifel Ausbilder:in oder Lehrkraft fragen."
+        ]
+      },
+      {
         titel: "Du bist verantwortlich",
         text: "KI ist ein Werkzeug, wie ein Taschenrechner. Sie kann dir viel Arbeit abnehmen. Aber: Was du weitergibst, verantwortest du. Und manche Daten gehören nie in eine KI. Mehr dazu in Level 4."
       }
@@ -79,7 +93,8 @@ const LEVELS = [
           "Ein Mensch tippt jede Antwort live für dich ein.",
           "Er hat aus riesigen Textmengen gelernt und sagt passende Wörter vorher.",
           "Er kennt alle Fakten der Welt und irrt sich nie.",
-          "Er kopiert immer die erste Seite aus dem Internet."
+          "Er kopiert immer die erste Seite aus dem Internet.",
+          "Er schlägt jede Antwort in einem fertigen Lexikon nach."
         ],
         richtig: 2,
         erklaerung: "Ein Chatbot hat aus sehr vielen Texten Muster gelernt. Er berechnet, welche Wörter am besten passen. Darum kann er auch falsche Antworten geben, die gut klingen."
@@ -91,7 +106,8 @@ const LEVELS = [
           "Wenn sie sicher klingt, stimmt sie auch.",
           "KI-Antworten werden vorher von Fachleuten geprüft.",
           "Sie kann trotzdem falsch sein. Wichtiges prüfe ich nach.",
-          "Nur kurze Antworten können falsch sein."
+          "Nur kurze Antworten können falsch sein.",
+          "Eine KI irrt sich nur bei sehr schwierigen Fragen."
         ],
         richtig: 3,
         erklaerung: "Eine KI klingt fast immer sicher, auch wenn sie sich irrt. Niemand prüft die Antworten vorher. Wichtige Angaben solltest du selbst kontrollieren."
@@ -103,7 +119,8 @@ const LEVELS = [
           "Die KI erfindet Angaben, die echt klingen, aber nicht stimmen.",
           "Die KI stürzt ab und muss neu starten.",
           "Die KI zeigt Bilder statt Text.",
-          "Die KI antwortet besonders kreativ, und das ist immer gut."
+          "Die KI antwortet besonders kreativ, und das ist immer gut.",
+          "Die KI versteht deine Frage absichtlich falsch."
         ],
         richtig: 1,
         erklaerung: "Beim Halluzinieren erfindet die KI zum Beispiel Zahlen, Namen oder Quellen. Das klingt echt, ist aber falsch. Darum gilt: nachprüfen."
@@ -115,7 +132,8 @@ const LEVELS = [
           "Die KI entscheidet allein, welcher Lieferant den Auftrag bekommt.",
           "Ich lade die Kundenliste mit allen Adressen in die KI hoch.",
           "Die KI schreibt Rechnungen, die ich ungeprüft verschicke.",
-          "Die KI schreibt einen ersten Entwurf für eine Mail. Ich prüfe ihn dann."
+          "Die KI schreibt einen ersten Entwurf für eine Mail. Ich prüfe ihn dann.",
+          "Ich speichere meine Passwörter in der KI, damit ich sie nicht vergesse."
         ],
         richtig: 4,
         erklaerung: "KI ist gut für Entwürfe und Ideen. Die Entscheidung und die Kontrolle bleiben bei dir. Kundendaten gehören nicht in eine KI."
@@ -127,10 +145,37 @@ const LEVELS = [
           "Eine KI darf keine Zahlen nennen.",
           "Ihr Wissen kann veraltet sein. Sie hat nur bis zu einem bestimmten Tag gelernt.",
           "Preise sind geheim und die KI kennt sie nicht.",
-          "Die KI rechnet absichtlich falsch."
+          "Die KI rechnet absichtlich falsch.",
+          "Die KI kennt jeden Preis, weil sie immer mit dem Internet verbunden ist."
         ],
         richtig: 2,
         erklaerung: "Viele KIs haben nur bis zu einem Stichtag gelernt. Aktuelle Preise kennen sie oft nicht. Auch wenn die KI im Internet sucht: Prüfe die Quelle."
+      },
+      {
+        typ: "quiz",
+        frage: "Eine KI nennt dir den Steuersatz für eine Rechnung. Was machst du?",
+        antworten: [
+          "Ich übernehme ihn. Computer rechnen ja immer genau.",
+          "Ich frage die KI nochmal. Sagt sie dasselbe, dann stimmt es.",
+          "Ich nehme einfach den Steuersatz, den ich am öftesten gesehen habe.",
+          "Ich lasse das Feld leer, dann kann nichts falsch sein.",
+          "Ich prüfe ihn in einer verlässlichen Quelle, z. B. auf der WKO-Website."
+        ],
+        richtig: 5,
+        erklaerung: "Nochmal fragen hilft nicht: Die KI kann denselben Fehler wiederholen. Steuersätze prüfst du in einer verlässlichen Quelle, z. B. bei der WKO oder im Fachbuch."
+      },
+      {
+        typ: "quiz",
+        frage: "Die KI nennt als Quelle ein Gesetz mit genauer Paragrafen-Nummer. Was stimmt?",
+        antworten: [
+          "Mit Paragrafen-Nummer ist die Angabe sicher richtig.",
+          "Die KI kann auch Quellen erfinden. Ich schaue nach, ob es den Paragrafen wirklich gibt.",
+          "Quellen von einer KI darf man nie verwenden.",
+          "Eine KI nennt nur Quellen, die sie vorher geprüft hat.",
+          "Paragrafen sind im Beruf nicht wichtig."
+        ],
+        richtig: 2,
+        erklaerung: "KIs erfinden manchmal Quellen, Gesetze oder Paragrafen. Das sieht sehr echt aus. Österreichische Gesetze kannst du kostenlos im RIS nachlesen (ris.bka.gv.at)."
       }
     ]
   },
